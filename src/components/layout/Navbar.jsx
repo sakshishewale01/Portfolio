@@ -1,118 +1,293 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { profile } from '../../data/profile'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { profile, navLinks } from '../../data/profile'
+import { useLenis } from './SmoothScroll'
+import { useScrollDirection } from '../../hooks/useScrollDirection'
+import { useActiveSection } from '../../hooks/useActiveSection'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Button } from '../ui/Button'
-import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { Menu, X, FileText, ArrowRight } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  const { scrollTo, stop, start } = useLenis()
+  const { isVisible } = useScrollDirection()
+  const reducedMotion = useReducedMotion()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+  const sectionIds = navLinks.map((l) => l.id)
+  const activeSection = useActiveSection(sectionIds)
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+  const toggleButtonRef = useRef(null)
+
+  // Handle navigation click (scroll if on home, navigate otherwise)
+  const handleNavClick = (e, link) => {
+    e.preventDefault()
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
-  const navLinks = [
-    { name: 'About', href: '/#about' },
-    { name: 'Projects', href: '/#projects' },
-    { name: 'Experience', href: '/#experience' },
-    { name: 'Skills', href: '/#skills' },
-    { name: 'Contact', href: '/#contact' },
-  ]
+    if (location.pathname === '/') {
+      scrollTo(`#${link.id}`, { offset: -20, duration: 1.2 })
+    } else {
+      navigate(`/#${link.id}`)
+    }
+  }
+
+  // Handle Escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false)
+        toggleButtonRef.current?.focus()
+      }
+    }
+
+    if (mobileMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown)
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [mobileMenuOpen])
+
+  // Lock body scroll and pause Lenis when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+      stop()
+      // Move focus into the menu
+      setTimeout(() => {
+        const firstFocusable = menuRef.current?.querySelector('a, button')
+        firstFocusable?.focus()
+      }, 50)
+    } else {
+      document.body.style.overflow = ''
+      start()
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+      start()
+    }
+  }, [mobileMenuOpen, stop, start])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border/80 py-3.5 shadow-subtle"
-          : "bg-transparent py-5"
-      )}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <>
+      {/* Desktop Floating Pill Navigation */}
+      <motion.nav
+        aria-label="Primary desktop navigation"
+        initial={{ y: 0 }}
+        animate={{ y: isVisible ? 0 : -90 }}
+        transition={{ duration: reducedMotion ? 0.01 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-40 hidden md:flex items-center gap-2 px-3 py-2 rounded-full bg-background-surface/80 backdrop-blur-lg border border-border/80 shadow-card"
+      >
+        {/* Monogram Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2.5 font-heading font-bold text-lg tracking-tight group"
+          onClick={(e) => handleNavClick(e, { id: 'home' })}
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent font-heading font-bold text-xs hover:scale-105 hover:bg-accent/25 transition-all mr-1"
+          aria-label={`${profile.name} - Home`}
         >
-          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/15 border border-accent/30 text-accent group-hover:scale-105 group-hover:bg-accent/25 transition-all">
-            S
-          </span>
-          <span className="text-foreground group-hover:text-white transition-colors">
-            {profile.name}
-            <span className="text-accent">.</span>
-          </span>
+          {profile.monogram || 'SS'}
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-foreground-muted font-medium">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="hover:text-foreground transition-colors py-1"
-            >
-              {link.name}
-            </a>
-          ))}
-        </nav>
+        {/* Links with Sliding Active Pill */}
+        <div className="flex items-center gap-1 text-xs font-medium text-foreground-muted">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === '/' && activeSection === link.id
 
-        {/* Action button */}
-        <div className="hidden md:flex items-center gap-3">
+            return (
+              <a
+                key={link.id}
+                href={link.href}
+                onClick={(e) => handleNavClick(e, link)}
+                className={cn(
+                  "relative px-3.5 py-1.5 rounded-full transition-colors duration-200 select-none",
+                  isActive ? "text-foreground font-semibold" : "hover:text-foreground"
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="active-nav-pill"
+                    className="absolute inset-0 rounded-full bg-accent/15 border border-accent/35 -z-10 shadow-[0_0_12px_rgba(124,92,255,0.2)]"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 380,
+                      damping: 32,
+                    }}
+                  />
+                )}
+                <span>{link.label}</span>
+              </a>
+            )
+          })}
+        </div>
+
+        {/* Primary Resume Action Button */}
+        <div className="ml-2 pl-2 border-l border-border/80">
           <Button
             as="a"
-            href={`mailto:${profile.email}`}
-            variant="ghost"
+            href={profile.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="primary"
             size="sm"
-            icon={ArrowUpRight}
-            iconPosition="right"
+            icon={FileText}
+            iconPosition="left"
+            className="rounded-full !px-3.5 !py-1 text-xs"
           >
-            Get in touch
+            Resume
           </Button>
         </div>
+      </motion.nav>
 
-        {/* Mobile menu button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-foreground-muted hover:text-foreground"
-          aria-label="Toggle navigation menu"
+      {/* Mobile Top Bar */}
+      <motion.header
+        initial={{ y: 0 }}
+        animate={{ y: isVisible ? 0 : -80 }}
+        transition={{ duration: reducedMotion ? 0.01 : 0.3 }}
+        className="fixed top-0 left-0 right-0 z-40 md:hidden flex items-center justify-between px-4 py-3.5 bg-background/85 backdrop-blur-md border-b border-border/80"
+      >
+        <Link
+          to="/"
+          onClick={(e) => handleNavClick(e, { id: 'home' })}
+          className="flex items-center gap-2 font-heading font-bold text-base text-foreground"
         >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
+          <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-xs">
+            {profile.monogram || 'SS'}
+          </span>
+          <span>{profile.name}</span>
+        </Link>
 
-      {/* Mobile dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-background-surface border-b border-border px-4 py-4 space-y-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-foreground-muted hover:text-foreground py-2 text-base font-medium"
-            >
-              {link.name}
-            </a>
-          ))}
-          <div className="pt-2">
-            <Button
-              as="a"
-              href={`mailto:${profile.email}`}
-              variant="primary"
-              size="sm"
-              className="w-full"
-            >
-              Get in touch
-            </Button>
-          </div>
+        <div className="flex items-center gap-2">
+          <Button
+            as="a"
+            href={profile.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="primary"
+            size="sm"
+            className="text-xs !py-1 !px-2.5"
+          >
+            Resume
+          </Button>
+
+          <button
+            ref={toggleButtonRef}
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-menu"
+            aria-label="Toggle navigation menu"
+            className="p-2 rounded-lg bg-background-elevated border border-border text-foreground-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
-      )}
-    </header>
+      </motion.header>
+
+      {/* Full-Screen Accessible Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            id="mobile-nav-menu"
+            ref={menuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation Menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reducedMotion ? 0.01 : 0.25 }}
+            className="fixed inset-0 z-50 md:hidden bg-background/95 backdrop-blur-2xl flex flex-col justify-between p-6 pt-24"
+          >
+            {/* Close button in top corner */}
+            <div className="absolute top-4 right-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  toggleButtonRef.current?.focus()
+                }}
+                className="p-2.5 rounded-full bg-background-elevated border border-border text-foreground hover:text-accent"
+                aria-label="Close navigation menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Staggered Navigation Links */}
+            <motion.nav
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: reducedMotion ? 0 : 0.07,
+                    delayChildren: 0.1,
+                  },
+                },
+              }}
+              className="flex flex-col gap-4 my-auto"
+            >
+              {navLinks.map((link) => {
+                const isActive = location.pathname === '/' && activeSection === link.id
+
+                return (
+                  <motion.div
+                    key={link.id}
+                    variants={{
+                      hidden: { opacity: 0, y: reducedMotion ? 0 : 18 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+                    }}
+                  >
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link)}
+                      className={cn(
+                        "flex items-center justify-between text-2xl font-heading font-semibold py-2 transition-colors",
+                        isActive ? "text-accent" : "text-foreground-muted hover:text-foreground"
+                      )}
+                    >
+                      <span>{link.label}</span>
+                      <ArrowRight className={cn("w-5 h-5", isActive ? "text-accent" : "opacity-30")} />
+                    </a>
+                  </motion.div>
+                )
+              })}
+            </motion.nav>
+
+            {/* Mobile Menu Footer */}
+            <div className="pt-6 border-t border-border flex flex-col gap-4">
+              <Button
+                as="a"
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                size="lg"
+                icon={FileText}
+                className="w-full justify-center"
+              >
+                Download Resume PDF
+              </Button>
+
+              <p className="text-center text-xs font-mono text-foreground-muted">
+                {profile.fullName} &bull; {profile.location}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
