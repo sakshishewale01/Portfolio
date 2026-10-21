@@ -8,7 +8,14 @@ export const profile = {
   role: "Software & AI/ML Engineer",
   title: "Computer Engineering B.Tech Student & Software Engineer",
   availability: "Open to AI / Software Roles • 2027",
-  image: "/profile.svg",
+  
+  photo: {
+    src: "/images/sakshi.jpg",
+    alt: "Portrait of Sakshi",
+    width: 1200,
+    height: 1500,
+  },
+
   rotatingRoles: [
     "AI Systems Engineer",
     "Full-Stack Developer",
@@ -18,7 +25,7 @@ export const profile = {
   tagline: "Architecting intelligent systems, distributed backend infrastructure, and fluid user experiences.",
   location: "Pune, India",
   email: "sakshishewale01@gmail.com",
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "/Sakshi_Shewale_Resume.pdf",
   bio: "Computer Engineering undergraduate focused on the intersection of modern software systems, scalable backends, and applied artificial intelligence. Passionate about engineering production-grade software that solves complex problems with elegance, speed, and precision.",
   
   about: {
@@ -60,6 +67,34 @@ export const profile = {
         metric: "450+ Solved",
       },
     ],
+  },
+
+  codingProfiles: {
+    github: {
+      username: "sakshishewale01",
+      profileUrl: "https://github.com/sakshishewale01",
+      fallbackRepos: 18,
+      fallbackFollowers: 24,
+      fallbackStars: 15,
+    },
+    leetcode: {
+      username: "sakshishewale",
+      profileUrl: "https://leetcode.com/u/sakshishewale",
+      solved: 450,
+      easy: 160,
+      medium: 240,
+      hard: 50,
+      rating: 1785,
+      lastUpdated: "October 2026",
+    },
+    codechef: {
+      username: "sakshishewale",
+      profileUrl: "https://www.codechef.com/users/sakshishewale",
+      rating: 1620,
+      stars: "3★",
+      globalRank: "Top 8%",
+      lastUpdated: "October 2026",
+    },
   },
 
   socials: {

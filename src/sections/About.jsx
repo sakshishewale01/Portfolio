@@ -4,25 +4,23 @@ import { profile } from '../data/profile'
 import { Section } from '../components/ui/Section'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
+import { Photo } from '../components/ui/Photo'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { createFadeUp, viewportConfig } from '../lib/motion'
 import { 
   MapPin, 
   GraduationCap, 
-  Briefcase, 
-  Award, 
-  CheckCircle2, 
   Sparkles,
-  ArrowUpRight,
   Calendar,
-  Building
+  Building,
+  Briefcase
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 /**
- * Interactive Photo Card with 3D Tilt on Hover & Floating Location Chip
+ * Interactive Photo Card with 3D Tilt on Hover, Soft Accent Glow & Floating Chips
  */
-function TiltPhotoCard({ image, name, location }) {
+function TiltPhotoCard({ photo, name, location }) {
   const cardRef = useRef(null)
   const reducedMotion = useReducedMotion()
   const [isTouchDevice, setIsTouchDevice] = useState(false)
@@ -46,7 +44,7 @@ function TiltPhotoCard({ image, name, location }) {
     const x = e.clientX - rect.left - rect.width / 2
     const y = e.clientY - rect.top - rect.height / 2
 
-    // Clamp rotation angle to ~8 degrees max
+    // Gentle rotation max ~7 degrees
     rotateX.set(-y / 18)
     rotateY.set(x / 18)
   }
@@ -56,8 +54,29 @@ function TiltPhotoCard({ image, name, location }) {
     rotateY.set(0)
   }
 
+  // Clip-path and scale reveal variant
+  const imageRevealVariants = {
+    hidden: {
+      opacity: 0,
+      scale: reducedMotion ? 1 : 1.05,
+      clipPath: reducedMotion ? 'inset(0% 0% 0% 0%)' : 'inset(10% 0% 10% 0%)',
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      clipPath: 'inset(0% 0% 0% 0%)',
+      transition: {
+        duration: reducedMotion ? 0.01 : 0.75,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  }
+
   return (
     <div className="relative w-full max-w-md mx-auto perspective-1000">
+      {/* Soft Ambient Violet Glow Behind Photo Frame */}
+      <div className="absolute -inset-2 rounded-3xl bg-accent/20 blur-2xl opacity-60 pointer-events-none group-hover:opacity-100 transition-opacity duration-500" />
+
       <motion.div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -71,36 +90,52 @@ function TiltPhotoCard({ image, name, location }) {
                 transformStyle: 'preserve-3d',
               }
         }
-        className="relative rounded-2xl overflow-hidden border border-border/80 bg-background-surface/80 p-3 shadow-card group transition-shadow duration-300 hover:shadow-glow hover:border-accent/40"
+        className="relative rounded-2xl overflow-hidden border border-border/90 bg-background-surface/90 p-3 shadow-card group transition-all duration-300 hover:shadow-glow hover:border-accent/40"
       >
-        {/* Aspect-Ratio Frame Container */}
-        <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-background-elevated">
-          <img
-            src={image || '/profile.svg'}
-            alt={`${name} portrait illustration`}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+        {/* Aspect-Ratio Frame Container with Reveal Animation */}
+        <motion.div
+          variants={imageRevealVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          className="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-background-elevated"
+        >
+          <Photo
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            fallbackInitials={profile.monogram || "SS"}
+            className="w-full h-full rounded-xl"
+            imageClassName="transition-transform duration-500 group-hover:scale-105"
           />
 
-          {/* Gradient Vignette Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+          {/* Gradient Vignette Overlay for Depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent pointer-events-none" />
 
-          {/* Floating Location Chip */}
-          <div className="absolute bottom-3 right-3 z-20">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/85 backdrop-blur-md border border-border/90 text-foreground text-xs font-mono shadow-subtle hover:border-accent/40 transition-colors">
+          {/* Floating Chip 1: "Open to work" (Top-Left, Floating Animation) */}
+          <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
+            <div className="animate-float-slow inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/85 backdrop-blur-md border border-border/90 text-foreground text-xs font-mono shadow-subtle">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
-              <MapPin className="w-3.5 h-3.5 text-accent" />
-              <span>{location}</span>
+              <span className="text-[11px] font-semibold text-emerald-300">Open to work</span>
             </div>
           </div>
-        </div>
 
-        {/* Bottom Card Footer Details */}
+          {/* Floating Chip 2: "Pune, India" (Bottom-Right, Floating Animation) */}
+          <div className="absolute bottom-3.5 right-3.5 z-20 pointer-events-none">
+            <div className="animate-float-slow-delayed inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/85 backdrop-blur-md border border-border/90 text-foreground text-xs font-mono shadow-subtle">
+              <MapPin className="w-3.5 h-3.5 text-accent" />
+              <span className="text-[11px] font-medium text-foreground">{location}</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Card Footer Details */}
         <div className="pt-3 pb-1 px-2 flex items-center justify-between text-xs text-foreground-muted font-mono">
-          <span className="flex items-center gap-1.5 text-foreground">
+          <span className="flex items-center gap-1.5 text-foreground font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             {name}
           </span>
@@ -127,7 +162,7 @@ export function About() {
       title="Engineering with Depth, Rigor & Purpose"
       description="From algorithmic foundations to distributed telemetry and applied intelligence."
     >
-      {/* Top Two-Column Story & Photo */}
+      {/* Top Two-Column Story & Photo Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16">
         {/* Left Column: 3 Narrative Paragraphs */}
         <motion.div
@@ -166,7 +201,7 @@ export function About() {
           className="lg:col-span-5"
         >
           <TiltPhotoCard
-            image={profile.image}
+            photo={profile.photo}
             name={profile.fullName}
             location={profile.location}
           />
@@ -212,7 +247,7 @@ export function About() {
         </Card>
       </motion.div>
 
-      {/* Highlights Grid (3-4 Small Cards) */}
+      {/* Highlights Grid */}
       <motion.div
         variants={fadeUpVariant}
         initial="hidden"

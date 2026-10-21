@@ -7,6 +7,7 @@ import { SplitText } from '../components/ui/SplitText'
 import { RotatingText } from '../components/ui/RotatingText'
 import { MagneticButton } from '../components/ui/MagneticButton'
 import { Marquee } from '../components/ui/Marquee'
+import { Photo } from '../components/ui/Photo'
 import { useLenis } from '../components/layout/SmoothScroll'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useCountUp } from '../hooks/useCountUp'
@@ -183,8 +184,24 @@ export function Hero() {
           animate="visible"
           className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-5 max-w-3xl"
         >
-          {/* 1. Availability Badge with Pulsing Green Dot */}
-          <motion.div variants={itemVariants}>
+          {/* 1. Circular Avatar (48px) with Accent Ring + Availability Badge */}
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <div className="relative w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-accent via-purple-500 to-indigo-500 shadow-glow shrink-0">
+              <div className="w-full h-full rounded-full overflow-hidden bg-background-elevated">
+                <Photo
+                  src={profile.photo.src}
+                  alt={profile.photo.alt}
+                  width={profile.photo.width}
+                  height={profile.photo.height}
+                  priority={true}
+                  fallbackInitials={profile.monogram || "SS"}
+                  aspectRatio="aspect-square"
+                  className="w-full h-full rounded-full"
+                />
+              </div>
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-background" />
+            </div>
+
             <Badge
               variant="default"
               dot

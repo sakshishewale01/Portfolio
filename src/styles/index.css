@@ -157,3 +157,32 @@ html.lenis, html.lenis body {
   animation: driftOrb2 20s ease-in-out infinite;
   will-change: transform;
 }
+
+/* Floating Chip Overlays (Transform Only, GPU accelerated) */
+@keyframes floatPillSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes floatPillSlowDelayed {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+.animate-float-slow {
+  animation: floatPillSlow 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-slow-delayed {
+  animation: floatPillSlowDelayed 6s ease-in-out infinite;
+  will-change: transform;
+}
