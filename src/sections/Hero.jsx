@@ -180,7 +180,7 @@ export function Hero() {
       >
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           animate="visible"
           className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-5 max-w-3xl"
         >
@@ -191,8 +191,8 @@ export function Hero() {
                 <Photo
                   src={profile.photo.src}
                   alt={profile.photo.alt}
-                  width={profile.photo.width}
-                  height={profile.photo.height}
+                  width={48}
+                  height={48}
                   priority={true}
                   fallbackInitials={profile.monogram || "SS"}
                   aspectRatio="aspect-square"
@@ -233,13 +233,10 @@ export function Hero() {
             <RotatingText roles={profile.rotatingRoles} interval={2500} />
           </motion.div>
 
-          {/* 4. Outcome-Focused Tagline */}
-          <motion.p
-            variants={itemVariants}
-            className="text-fluid-body text-foreground-muted max-w-2xl leading-relaxed"
-          >
+          {/* 4. Outcome-Focused Tagline (Instant LCP) */}
+          <p className="text-fluid-body text-foreground-muted max-w-2xl leading-relaxed">
             {profile.tagline}
-          </motion.p>
+          </p>
 
           {/* 5. CTAs Row with Magnetic Pull on Primary */}
           <motion.div

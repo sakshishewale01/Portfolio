@@ -21,7 +21,7 @@ export const Button = React.forwardRef(({
   const baseStyles = "relative inline-flex items-center justify-center font-medium transition-all duration-200 select-none rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none group"
 
   const variants = {
-    primary: "bg-accent text-white hover:bg-accent-hover shadow-subtle hover:shadow-glow active:scale-[0.98]",
+    primary: "bg-[#653CFF] text-white hover:bg-[#754EFF] shadow-subtle hover:shadow-glow active:scale-[0.98]",
     ghost: "bg-transparent text-foreground-muted hover:text-foreground border border-border hover:border-border-hover hover:bg-background-elevated active:scale-[0.98]",
   }
 

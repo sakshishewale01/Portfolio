@@ -14,11 +14,11 @@
   --text-primary: #EDEDED;
   --text-muted: #8A8A93;
   
-  /* Single Accent Color: Electric Violet */
-  --accent: #7C5CFF;
-  --accent-hover: #8D72FF;
-  --accent-glow: rgba(124, 92, 255, 0.35);
-  --accent-glow-subtle: rgba(124, 92, 255, 0.12);
+  /* Single Accent Color: Electric Violet (WCAG AA 4.5:1 compliant) */
+  --accent: #8E72FF;
+  --accent-hover: #9F87FF;
+  --accent-glow: rgba(142, 114, 255, 0.35);
+  --accent-glow-subtle: rgba(142, 114, 255, 0.12);
 }
 
 /* Base resets & typography */

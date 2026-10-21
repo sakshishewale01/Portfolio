@@ -39,7 +39,7 @@ export function PageTransition({ children }) {
       <motion.div
         key={location.pathname}
         variants={variants}
-        initial="initial"
+        initial={false}
         animate="enter"
         exit="exit"
         className="w-full flex-grow flex flex-col"

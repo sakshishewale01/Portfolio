@@ -54,7 +54,7 @@ export function SplitText({
     >
       <motion.span
         variants={containerVariants}
-        initial="hidden"
+        initial={false}
         animate="visible"
         aria-hidden="true"
         className="inline-flex flex-wrap gap-x-[0.25em]"

@@ -12,8 +12,8 @@ export const profile = {
   photo: {
     src: "/images/sakshi.jpg",
     alt: "Portrait of Sakshi",
-    width: 1200,
-    height: 1500,
+    width: 600,
+    height: 750,
   },
 
   rotatingRoles: [
