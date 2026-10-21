@@ -7,8 +7,9 @@ import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { useActiveSection } from '../../hooks/useActiveSection'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Button } from '../ui/Button'
-import { Menu, X, FileText, ArrowRight } from 'lucide-react'
+import { Menu, X, FileText, ArrowRight, Search, Command } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { ScrambleText } from '../ui/ScrambleText'
 
 export function Navbar() {
   const location = useLocation()
@@ -23,6 +24,11 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const toggleButtonRef = useRef(null)
+
+  // Trigger Command Palette open event
+  const handleOpenSearch = () => {
+    window.dispatchEvent(new CustomEvent('open-command-palette'))
+  }
 
   // Handle navigation click (scroll if on home, navigate otherwise)
   const handleNavClick = (e, link) => {
@@ -99,7 +105,7 @@ export function Navbar() {
           {profile.monogram || 'SS'}
         </Link>
 
-        {/* Links with Sliding Active Pill */}
+        {/* Links with Sliding Active Pill and Subtle Scramble on Hover */}
         <div className="flex items-center gap-1 text-xs font-medium text-foreground-muted">
           {navLinks.map((link) => {
             const isActive = location.pathname === '/' && activeSection === link.id
@@ -110,7 +116,7 @@ export function Navbar() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
                 className={cn(
-                  "relative px-3.5 py-1.5 rounded-full transition-colors duration-200 select-none",
+                  "relative px-3.5 py-1.5 rounded-full transition-colors duration-200 select-none group",
                   isActive ? "text-foreground font-semibold" : "hover:text-foreground"
                 )}
               >
@@ -125,14 +131,28 @@ export function Navbar() {
                     }}
                   />
                 )}
-                <span>{link.label}</span>
+                <ScrambleText>{link.label}</ScrambleText>
               </a>
             )
           })}
         </div>
 
+        {/* Search / Command Palette Hint Button */}
+        <button
+          type="button"
+          onClick={handleOpenSearch}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-foreground-muted hover:text-foreground bg-background-elevated/70 hover:bg-background-elevated rounded-full border border-border/70 hover:border-accent/40 transition-all ml-1"
+          aria-label="Open command palette (Ctrl+K or Cmd+K)"
+        >
+          <Search className="w-3 h-3 text-accent" />
+          <span className="hidden lg:inline text-[11px]">Search</span>
+          <kbd className="px-1.5 py-0.5 rounded bg-background text-[10px] font-mono border border-border text-foreground-muted">
+            ⌘K
+          </kbd>
+        </button>
+
         {/* Primary Resume Action Button */}
-        <div className="ml-2 pl-2 border-l border-border/80">
+        <div className="ml-1 pl-2 border-l border-border/80">
           <Button
             as="a"
             href={profile.resumeUrl}
@@ -168,6 +188,16 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Mobile Search Trigger */}
+          <button
+            type="button"
+            onClick={handleOpenSearch}
+            className="p-2 rounded-lg bg-background-elevated border border-border text-foreground-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Open command palette"
+          >
+            <Search className="w-4 h-4 text-accent" />
+          </button>
+
           <Button
             as="a"
             href={profile.resumeUrl}

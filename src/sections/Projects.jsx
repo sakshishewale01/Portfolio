@@ -93,7 +93,8 @@ export function Projects() {
               >
                 <Link
                   to={`/projects/${project.slug}`}
-                  className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  data-cursor="view"
+                  className="project-card block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
                 >
                   <Card
                     className="h-full flex flex-col justify-between p-0 overflow-hidden border-border/80 hover:border-accent/40"
