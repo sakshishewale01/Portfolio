@@ -8,7 +8,7 @@ export const profile = {
   role: "Software & AI/ML Engineer",
   title: "Computer Engineering B.Tech Student & Software Engineer",
   availability: "Open to AI / Software Roles • 2027",
-  
+
   photo: {
     src: "/images/sakshi.jpg",
     alt: "Portrait of Sakshi",
@@ -24,9 +24,9 @@ export const profile = {
   ],
   tagline: "Architecting intelligent systems, distributed backend infrastructure, and fluid user experiences.",
   location: "Pune, India",
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "/Sakshi_Shewale_Resume.pdf",
   bio: "Computer Engineering undergraduate focused on the intersection of modern software systems, scalable backends, and applied artificial intelligence. Passionate about engineering production-grade software that solves complex problems with elegance, speed, and precision.",
-  
+
   about: {
     paragraphs: [
       "I am a final-year Computer Engineering undergraduate driven by a commitment to understand how modern computing systems scale from core algorithmic principles to high-throughput, fault-tolerant infrastructure.",

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowLeft, Search, Terminal } from 'lucide-react'
+import { ArrowLeft, Terminal } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Card } from '../components/ui/Card'
@@ -9,10 +8,6 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export function NotFound() {
   useDocumentTitle('404 Not Found | Sakshi Shewale', 'The requested page could not be located.')
-
-  const handleOpenSearch = () => {
-    window.dispatchEvent(new CustomEvent('open-command-palette'))
-  }
 
   return (
     <div className="min-h-[75vh] flex items-center justify-center px-4 py-16">
@@ -43,7 +38,7 @@ export function NotFound() {
             <span className="truncate">ERR_ROUTE_NOT_FOUND: {typeof window !== 'undefined' ? window.location.pathname : 'path'}</span>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex justify-center pt-2">
             <Button
               as={Link}
               to="/"
@@ -54,18 +49,6 @@ export function NotFound() {
               className="w-full sm:w-auto"
             >
               Back to Home
-            </Button>
-
-            <Button
-              type="button"
-              onClick={handleOpenSearch}
-              variant="secondary"
-              size="md"
-              icon={Search}
-              iconPosition="left"
-              className="w-full sm:w-auto"
-            >
-              Open Search (⌘K)
             </Button>
           </div>
         </Card>

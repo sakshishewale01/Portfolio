@@ -8,9 +8,6 @@ import { PageTransition } from './PageTransition'
 import { ToastProvider } from '../../context/ToastContext'
 
 // Lazy load progressive enhancement components so they do not impact initial render performance
-const CommandPalette = lazy(() =>
-  import('../CommandPalette').then((module) => ({ default: module.CommandPalette }))
-)
 const CustomCursor = lazy(() =>
   import('../ui/CustomCursor').then((module) => ({ default: module.CustomCursor }))
 )
@@ -85,7 +82,6 @@ export function RootLayout() {
 
           {/* Progressive Enhancement Layers (Lazy Loaded) */}
           <Suspense fallback={null}>
-            <CommandPalette />
             <CustomCursor />
             <KonamiConfetti />
           </Suspense>
