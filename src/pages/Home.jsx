@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Hero } from '../sections/Hero'
+import { About } from '../sections/About'
+import { Skills } from '../sections/Skills'
 import { Section } from '../components/ui/Section'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
@@ -8,19 +10,13 @@ import { Button } from '../components/ui/Button'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { experience } from '../data/experience'
-import { skillCategories } from '../data/skills'
 import { useLenis } from '../components/layout/SmoothScroll'
 import { 
   ArrowDown, 
   ArrowUpRight, 
-  Palette, 
-  Sparkles, 
-  Terminal, 
   Briefcase, 
   FolderGit2, 
-  User, 
-  Mail,
-  ExternalLink
+  Mail
 } from 'lucide-react'
 
 export function Home() {
@@ -31,109 +27,11 @@ export function Home() {
       {/* 1. Production Hero Section */}
       <Hero />
 
-      {/* 2. About Placeholder Section */}
-      <section
-        id="about"
-        className="min-h-screen flex flex-col justify-center items-center relative border-b border-border/40 bg-background-surface/20"
-      >
-        <Section
-          label="02 // Background"
-          title="About Sakshi"
-          description={profile.bio}
-          align="center"
-          badgeVariant="default"
-        >
-          <div className="max-w-2xl mx-auto space-y-6">
-            <Card className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-accent" />
-                  <span className="font-heading font-semibold text-foreground text-sm">
-                    {profile.fullName} &bull; {profile.location}
-                  </span>
-                </div>
-                <Badge variant="outline" size="sm">#about</Badge>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                {profile.stats.map((stat, i) => (
-                  <div key={i} className="p-3 rounded-lg bg-background border border-border">
-                    <p className="font-mono text-[11px] text-foreground-muted">{stat.label}</p>
-                    <p className="font-heading font-bold text-foreground text-sm mt-0.5">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-end pt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  icon={ArrowDown}
-                  iconPosition="right"
-                  onClick={() => scrollTo('#skills', { duration: 1.2 })}
-                >
-                  Next: #skills
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </Section>
-      </section>
+      {/* 2. Production About Section */}
+      <About />
 
-      {/* 3. Skills Placeholder Section */}
-      <section
-        id="skills"
-        className="min-h-screen flex flex-col justify-center items-center relative border-b border-border/40"
-      >
-        <Section
-          label="03 // Capabilities"
-          title="Technical Competencies"
-          description="Grouped inventory across AI/ML engineering, systems architecture, and fluid frontend development."
-          align="center"
-          badgeVariant="accent"
-        >
-          <div className="max-w-3xl mx-auto w-full">
-            <Card className="space-y-5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-accent" />
-                  <span className="font-heading font-semibold text-foreground text-sm">
-                    Categorized Skills ({skillCategories.length} Domains)
-                  </span>
-                </div>
-                <Badge variant="accent" size="sm">#skills</Badge>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {skillCategories.map((cat) => (
-                  <div key={cat.category} className="p-3.5 rounded-lg bg-background-elevated/60 border border-border">
-                    <p className="font-heading font-semibold text-xs text-foreground mb-1">
-                      {cat.category}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {cat.skills.slice(0, 4).map((s) => (
-                        <span key={s.name} className="font-mono text-[10px] px-2 py-0.5 rounded bg-background text-foreground-muted border border-border/80">
-                          {s.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-end pt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  icon={ArrowDown}
-                  iconPosition="right"
-                  onClick={() => scrollTo('#projects', { duration: 1.2 })}
-                >
-                  Next: #projects
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </Section>
-      </section>
+      {/* 3. Production Skills Bento Grid Section */}
+      <Skills />
 
       {/* 4. Projects Placeholder Section */}
       <section

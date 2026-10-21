@@ -8,6 +8,7 @@ export const profile = {
   role: "Software & AI/ML Engineer",
   title: "Computer Engineering B.Tech Student & Software Engineer",
   availability: "Open to AI / Software Roles • 2027",
+  image: "/profile.svg",
   rotatingRoles: [
     "AI Systems Engineer",
     "Full-Stack Developer",
@@ -20,6 +21,47 @@ export const profile = {
   resumeUrl: "/resume.pdf",
   bio: "Computer Engineering undergraduate focused on the intersection of modern software systems, scalable backends, and applied artificial intelligence. Passionate about engineering production-grade software that solves complex problems with elegance, speed, and precision.",
   
+  about: {
+    paragraphs: [
+      "I am a final-year Computer Engineering undergraduate driven by a commitment to understand how modern computing systems scale from core algorithmic principles to high-throughput, fault-tolerant infrastructure.",
+      "My engineering work bridges distributed backend systems and applied artificial intelligence. Whether optimizing machine learning pipelines for network telemetry anomaly detection during my internship at Cisco or architecting decentralized social protocols and embeddable storage engines, I build for low latency, reliability, and clean separation of concerns.",
+      "I am looking for high-impact Software Engineering and AI/ML roles at forward-thinking engineering companies where I can contribute to mission-critical distributed systems, learn alongside high-caliber engineers, and ship robust software.",
+    ],
+    education: {
+      institution: "Pune Institute of Computer Technology (PICT)",
+      degree: "B.Tech in Computer Engineering",
+      period: "2023 — 2027",
+      location: "Pune, India",
+      coursework: "Distributed Systems, Advanced Algorithms & Data Structures, Database Internals, Machine Learning, Operating Systems",
+    },
+    highlights: [
+      {
+        title: "AI/ML Intern at Cisco",
+        subtitle: "Enterprise Telemetry",
+        description: "Engineered time-series network failure classification models reducing false positive alerts by 28%.",
+        metric: "Cisco Intern",
+      },
+      {
+        title: "B.Tech Computer Engineering",
+        subtitle: "PICT Pune",
+        description: "Rigorous focus on distributed systems, operating system internals, and computational complexity.",
+        metric: "Class of 2027",
+      },
+      {
+        title: "5+ Systems Shipped",
+        subtitle: "Full-Stack & Web3",
+        description: "Engineered production apps spanning decentralized social platforms, workflow engines, and embedded B+ tree databases.",
+        metric: "5 Systems",
+      },
+      {
+        title: "450+ Algorithmic Challenges",
+        subtitle: "LeetCode & CodeChef",
+        description: "Extensive problem solving covering dynamic programming, graph theory, trees, and concurrency.",
+        metric: "450+ Solved",
+      },
+    ],
+  },
+
   socials: {
     linkedin: "https://www.linkedin.com/in/sakshishewale",
     github: "https://github.com/sakshishewale01",
