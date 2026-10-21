@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Hero } from '../sections/Hero'
 import { Section } from '../components/ui/Section'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
@@ -27,49 +28,8 @@ export function Home() {
 
   return (
     <div className="w-full">
-      {/* 1. Home / Hero Placeholder Section */}
-      <section
-        id="home"
-        className="min-h-screen flex flex-col justify-center items-center relative pt-20 border-b border-border/40"
-      >
-        <Section
-          label="01 // System Shell"
-          title={`${profile.name} — ${profile.role}`}
-          description={profile.tagline}
-          align="center"
-          badgeVariant="accent"
-        >
-          <div className="max-w-xl mx-auto space-y-6 text-center">
-            <Card className="text-left space-y-4">
-              <div className="flex items-center justify-between">
-                <Badge variant="accent" dot>
-                  Active Section: #home
-                </Badge>
-                <span className="font-mono text-xs text-foreground-muted">Viewport Height: 100vh</span>
-              </div>
-              <p className="text-sm text-foreground-muted leading-relaxed">
-                This full-height placeholder verifies <strong>Lenis smooth scroll</strong>, <strong>scroll-spy active link indicator</strong>, and the <strong>direction-aware floating navbar</strong>.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2">
-                <Link to="/design">
-                  <Button variant="ghost" size="sm" icon={Palette} iconPosition="left">
-                    View Design System Preview (/design)
-                  </Button>
-                </Link>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  icon={ArrowDown}
-                  iconPosition="right"
-                  onClick={() => scrollTo('#about', { duration: 1.2 })}
-                >
-                  Scroll to #about
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </Section>
-      </section>
+      {/* 1. Production Hero Section */}
+      <Hero />
 
       {/* 2. About Placeholder Section */}
       <section

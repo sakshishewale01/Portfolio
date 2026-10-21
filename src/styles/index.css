@@ -107,3 +107,53 @@ html.lenis, html.lenis body {
 .glow-accent {
   box-shadow: 0 0 40px -10px var(--accent-glow);
 }
+
+/* Infinite Marquee Animation (Pure CSS, GPU transform) */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Drifting Ambient Gradient Orbs */
+@keyframes driftOrb1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(50px, -35px, 0) scale(1.12);
+  }
+}
+
+@keyframes driftOrb2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-45px, 45px, 0) scale(0.92);
+  }
+}
+
+.animate-orb-1 {
+  animation: driftOrb1 16s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-orb-2 {
+  animation: driftOrb2 20s ease-in-out infinite;
+  will-change: transform;
+}
