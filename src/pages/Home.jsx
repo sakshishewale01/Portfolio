@@ -3,19 +3,17 @@ import { Link } from 'react-router-dom'
 import { Hero } from '../sections/Hero'
 import { About } from '../sections/About'
 import { Skills } from '../sections/Skills'
+import { Projects } from '../sections/Projects'
 import { Section } from '../components/ui/Section'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { profile } from '../data/profile'
-import { projects } from '../data/projects'
 import { experience } from '../data/experience'
 import { useLenis } from '../components/layout/SmoothScroll'
 import { 
   ArrowDown, 
-  ArrowUpRight, 
   Briefcase, 
-  FolderGit2, 
   Mail
 } from 'lucide-react'
 
@@ -33,63 +31,8 @@ export function Home() {
       {/* 3. Production Skills Bento Grid Section */}
       <Skills />
 
-      {/* 4. Projects Placeholder Section */}
-      <section
-        id="projects"
-        className="min-h-screen flex flex-col justify-center items-center relative border-b border-border/40 bg-background-surface/20"
-      >
-        <Section
-          label="04 // Engineering"
-          title="Featured Projects"
-          description="Distributed systems, Web3 social architectures, and AI telemetry platforms."
-          align="center"
-          badgeVariant="default"
-        >
-          <div className="max-w-3xl mx-auto w-full space-y-4">
-            <Card className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <FolderGit2 className="w-4 h-4 text-accent" />
-                  <span className="font-heading font-semibold text-foreground text-sm">
-                    {projects.length} Engineered Systems
-                  </span>
-                </div>
-                <Badge variant="accent" size="sm">#projects</Badge>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {projects.slice(0, 4).map((proj) => (
-                  <div key={proj.slug} className="p-3 rounded-lg bg-background border border-border flex items-center justify-between">
-                    <div>
-                      <p className="font-heading font-semibold text-xs text-foreground">{proj.title}</p>
-                      <p className="font-mono text-[10px] text-foreground-muted">{proj.tech.slice(0, 2).join(', ')}</p>
-                    </div>
-                    <Link
-                      to={`/projects/${proj.slug}`}
-                      className="text-accent hover:text-accent-hover text-xs font-mono inline-flex items-center gap-1"
-                    >
-                      <span>Route</span>
-                      <ArrowUpRight className="w-3 h-3" />
-                    </Link>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-end pt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  icon={ArrowDown}
-                  iconPosition="right"
-                  onClick={() => scrollTo('#experience', { duration: 1.2 })}
-                >
-                  Next: #experience
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </Section>
-      </section>
+      {/* 4. Production Projects Section */}
+      <Projects />
 
       {/* 5. Experience Placeholder Section */}
       <section

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <rect width="800" height="500" fill="#0C0D12"/>
+  <!-- Kanban Board UI Simulation -->
+  <rect x="30" y="25" width="740" height="42" rx="8" fill="#14151C" stroke="#22232E"/>
+  <circle cx="55" cy="46" r="5" fill="#EF4444" opacity="0.8"/>
+  <circle cx="72" cy="46" r="5" fill="#F59E0B" opacity="0.8"/>
+  <circle cx="89" cy="46" r="5" fill="#10B981" opacity="0.8"/>
+  <text x="120" y="50" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="12" fill="#EDEDED">TeamFlow // Sprint 14 Board (Live WebSocket Sync)</text>
+
+  <!-- 3 Kanban Columns -->
+  <!-- Col 1: To Do -->
+  <rect x="30" y="85" width="230" height="385" rx="8" fill="#111217" stroke="#1D1E26"/>
+  <text x="45" y="112" font-family="'JetBrains Mono', monospace" font-size="11" fill="#8A8A93">IN QUEUE (3)</text>
+  <rect x="45" y="130" width="200" height="85" rx="6" fill="#181921" stroke="#262734"/>
+  <text x="58" y="155" font-family="'Inter', sans-serif" font-weight="500" font-size="11" fill="#EDEDED">Telemetry Stream Parser</text>
+  <rect x="58" y="180" width="55" height="18" rx="3" fill="#7C5CFF" fill-opacity="0.2"/>
+  <text x="66" y="193" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7C5CFF">High P1</text>
+
+  <!-- Col 2: In Progress -->
+  <rect x="285" y="85" width="230" height="385" rx="8" fill="#111217" stroke="#1D1E26"/>
+  <text x="300" y="112" font-family="'JetBrains Mono', monospace" font-size="11" fill="#7C5CFF">IN FLIGHT (2)</text>
+  <rect x="300" y="130" width="200" height="95" rx="6" fill="#181921" stroke="#7C5CFF" stroke-opacity="0.5"/>
+  <text x="313" y="155" font-family="'Inter', sans-serif" font-weight="500" font-size="11" fill="#EDEDED">Distributed Task Retry DAG</text>
+  <rect x="313" y="190" width="65" height="18" rx="3" fill="#10B981" fill-opacity="0.2"/>
+  <text x="323" y="203" font-family="'JetBrains Mono', monospace" font-size="9" fill="#10B981">Multiplayer</text>
+
+  <!-- Col 3: Done -->
+  <rect x="540" y="85" width="230" height="385" rx="8" fill="#111217" stroke="#1D1E26"/>
+  <text x="555" y="112" font-family="'JetBrains Mono', monospace" font-size="11" fill="#10B981">COMPLETED (8)</text>
+  <rect x="555" y="130" width="200" height="80" rx="6" fill="#181921" stroke="#262734"/>
+  <text x="568" y="155" font-family="'Inter', sans-serif" font-weight="500" font-size="11" fill="#8A8A93">Auth JWT Session Middleware</text>
+</svg>
