@@ -69,9 +69,19 @@ export function Footer() {
           </a>
         </div>
 
-        {/* Built With & Back to Top */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 text-xs font-mono text-foreground-muted">
+        {/* Built With, Resume & Back to Top */}
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-foreground-muted">
           <span>Built with React, Tailwind and Framer Motion</span>
+
+          <a
+            href={profile.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background-elevated hover:bg-accent/15 hover:text-accent border border-border hover:border-accent/30 text-foreground transition-all duration-200"
+            aria-label="View Resume PDF"
+          >
+            <span>Resume</span>
+          </a>
           
           <button
             type="button"

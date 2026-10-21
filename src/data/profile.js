@@ -24,8 +24,7 @@ export const profile = {
   ],
   tagline: "Architecting intelligent systems, distributed backend infrastructure, and fluid user experiences.",
   location: "Pune, India",
-  email: "sakshishewale01@gmail.com",
-  resumeUrl: "/Sakshi_Shewale_Resume.pdf",
+  resumeUrl: "/resume.pdf",
   bio: "Computer Engineering undergraduate focused on the intersection of modern software systems, scalable backends, and applied artificial intelligence. Passionate about engineering production-grade software that solves complex problems with elegance, speed, and precision.",
   
   about: {
