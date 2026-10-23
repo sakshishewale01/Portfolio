@@ -247,7 +247,7 @@ export function Hero() {
             className="flex items-center gap-2 text-lg sm:text-xl lg:text-2xl font-mono text-foreground-muted"
           >
             <span className="text-accent">&gt;</span>
-            <span className="text-foreground-muted">Specializing as</span>
+            <span className="text-foreground-muted">Aspiring</span>
             <RotatingText roles={profile.rotatingRoles} interval={2500} />
           </motion.div>
 

@@ -1,282 +1,404 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { skillsBento } from '../data/skills'
 import { Section } from '../components/ui/Section'
-import { Card } from '../components/ui/Card'
-import { Badge } from '../components/ui/Badge'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { createFadeUp, viewportConfig } from '../lib/motion'
-import { 
-  Cpu, 
-  Server, 
-  Layout, 
-  Terminal, 
-  Compass, 
-  Boxes, 
-  Zap, 
-  Flame, 
-  Check, 
+import {
+  Code2,
+  Layout,
+  Server,
+  Cpu,
+  Terminal,
   Sparkles,
-  Layers
+  Layers,
+  ArrowRight,
+  GitBranch,
+  Network,
+  CheckCircle2,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-/**
- * Icon mapper for category titles
- */
-const categoryIcons = {
-  Cpu: Cpu,
-  Server: Server,
+const iconMap = {
+  Code2: Code2,
   Layout: Layout,
-  Terminal: Terminal,
-  Compass: Compass,
+  Server: Server,
+  Cpu: Cpu,
 }
 
-const principleIcons = {
-  Boxes: Boxes,
-  Zap: Zap,
-  Flame: Flame,
+// Honest status styling badge helper
+function StatusBadge({ status }) {
+  switch (status) {
+    case 'Practising':
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Practising</span>
+        </span>
+      )
+    case 'Used in projects':
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-accent/15 text-accent border border-accent/30">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+          <span>Used in projects</span>
+        </span>
+      )
+    case 'Currently learning':
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/25">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+          <span>Currently learning</span>
+        </span>
+      )
+    case 'Familiar with':
+    default:
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-blue-500/10 text-blue-300 border border-blue-500/25">
+          <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+          <span>Familiar with</span>
+        </span>
+      )
+  }
 }
 
 /**
- * Animated Gradient Border Wrapper for "Currently Exploring" Card
+ * Interactive Developer Terminal ("CURRENT FOCUS")
+ * Types out realistic focus lines once on enter view, with static fallback.
  */
-function GradientBorderCard({ children, className }) {
+function FocusTerminal({ reducedMotion }) {
+  const terminalRef = useRef(null)
+  const isInView = useInView(terminalRef, { once: true, margin: '-50px' })
+
+  const focusData = skillsBento?.currentFocus || {}
+  const title = focusData.title || 'CURRENT FOCUS'
+  const command = focusData.command || 'sakshi --focus'
+  const focusFields = Array.isArray(focusData.fields) && focusData.fields.length > 0
+    ? focusData.fields
+    : [
+        { key: 'current_focus', value: 'C++ and DSA' },
+        { key: 'practice', value: 'Striver A2Z' },
+        { key: 'building', value: 'Full-stack and applied AI projects' },
+        { key: 'goal', value: 'Software engineering internships in 2027' },
+      ]
+
+  const [visibleCount, setVisibleCount] = useState(reducedMotion ? focusFields.length : 0)
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setVisibleCount(focusFields.length)
+      return
+    }
+
+    if (!isInView) return
+
+    const interval = setInterval(() => {
+      setVisibleCount((prev) => {
+        if (prev < focusFields.length) {
+          return prev + 1
+        }
+        clearInterval(interval)
+        return prev
+      })
+    }, 280)
+
+    return () => clearInterval(interval)
+  }, [isInView, reducedMotion, focusFields.length])
+
+  const isTypingDone = visibleCount >= focusFields.length
+
   return (
-    <div className={cn("relative p-[1px] rounded-xl overflow-hidden group h-full", className)}>
-      {/* Animated gradient ring */}
-      <div className="absolute inset-0 bg-gradient-to-r from-accent via-indigo-500 to-purple-400 opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-pulse-subtle" />
-      <div className="relative h-full w-full rounded-xl bg-background-surface">
-        {children}
+    <div
+      ref={terminalRef}
+      className="rounded-2xl border border-border/80 bg-background-surface/90 shadow-card p-5 overflow-hidden transition-all duration-300 hover:border-accent/40"
+    >
+      {/* Terminal Title Bar */}
+      <div className="flex items-center justify-between pb-3 mb-3 border-b border-border/60">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+          </div>
+          <span className="font-mono text-xs text-foreground-muted ml-2 flex items-center gap-1.5">
+            <Terminal className="w-3.5 h-3.5 text-accent" />
+            <span>{title}</span>
+          </span>
+        </div>
+
+        <span className="font-mono text-[10px] text-accent/80 px-2 py-0.5 rounded bg-accent/10 border border-accent/20">
+          zsh
+        </span>
+      </div>
+
+      {/* Terminal Body */}
+      <div className="font-mono text-xs space-y-2 select-text">
+        <div className="text-foreground-muted flex items-center gap-1.5">
+          <span className="text-accent">$</span>
+          <span className="text-foreground">{command}</span>
+        </div>
+
+        <div className="space-y-1.5 pt-1">
+          {focusFields.slice(0, visibleCount).map((field, idx) => {
+            if (!field) return null
+            const fieldKey = field.key || `field-${idx}`
+            const fieldValue = field.value || ''
+
+            return (
+              <motion.div
+                key={fieldKey}
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3"
+              >
+                <span className="text-foreground-muted text-[11px] min-w-[110px]">
+                  {fieldKey}:
+                </span>
+                <span className="text-foreground font-medium text-xs">
+                  {fieldValue}
+                </span>
+              </motion.div>
+            )
+          })}
+
+          {!isTypingDone && (
+            <span className="inline-block w-2 h-3.5 bg-accent animate-pulse align-middle ml-1" />
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
 /**
- * Skills Section Bento Grid Component
+ * Interactive Tech Constellation Matrix
+ * Visualizes interconnected tools (e.g. React ↔ JavaScript, FastAPI ↔ Python)
+ */
+function TechConstellation({ constellation, reducedMotion }) {
+  const [activeLink, setActiveLink] = useState(null)
+
+  return (
+    <div className="rounded-2xl border border-border/80 bg-background-surface/80 p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Network className="w-4 h-4 text-accent" />
+          <h4 className="font-mono text-xs font-semibold uppercase tracking-wider text-foreground">
+            Interconnected Stack
+          </h4>
+        </div>
+        <span className="font-mono text-[10px] text-foreground-muted">
+          Click or hover links
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        {constellation.map((link) => {
+          const isActive = activeLink === link.id
+
+          return (
+            <motion.div
+              key={link.id}
+              onClick={() => setActiveLink(isActive ? null : link.id)}
+              onMouseEnter={() => setActiveLink(link.id)}
+              onMouseLeave={() => setActiveLink(null)}
+              whileHover={reducedMotion ? {} : { y: -2 }}
+              className={cn(
+                'cursor-pointer rounded-xl border p-3 transition-all duration-200 select-none',
+                isActive
+                  ? 'bg-accent/10 border-accent/60 shadow-glow'
+                  : 'bg-background hover:bg-background-elevated border-border/70 text-foreground-muted'
+              )}
+            >
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className={cn('font-semibold', isActive ? 'text-accent' : 'text-foreground')}>
+                  {link.source}
+                </span>
+                <span className="text-accent/60 px-1">&harr;</span>
+                <span className={cn('font-semibold', isActive ? 'text-accent' : 'text-foreground')}>
+                  {link.target}
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-foreground-muted truncate">
+                {link.description}
+              </p>
+            </motion.div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Upgraded Interactive Developer Skills Dashboard (`id="skills"`)
  */
 export function Skills() {
   const reducedMotion = useReducedMotion()
   const fadeUpVariant = createFadeUp(reducedMotion)
+  const [selectedIdx, setSelectedIdx] = useState(0)
 
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: reducedMotion ? 0 : 0.08,
-      },
-    },
-  }
-
-  const chipVariants = {
-    hidden: { opacity: 0, scale: reducedMotion ? 1 : 0.95 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.35, ease: 'easeOut' },
-    },
-  }
-
-  const { categories, currentlyLearning, principles } = skillsBento
+  const { categories, constellation } = skillsBento
+  const activeCategory = categories[selectedIdx] || categories[0]
+  const ActiveCategoryIcon = iconMap[activeCategory.iconName] || Code2
 
   return (
     <Section
       id="skills"
-      label="03 // Capabilities & Philosophy"
-      title="Technical Arsenal & Engineering Principles"
-      description="Systems, algorithms, and applied AI categorized by practical comfort level. Zero arbitrary percentage bars."
+      label="03 // SKILLS"
+      title="Tools I use. Skills I'm growing."
+      description="A hands-on journey through software development and applied AI."
+      className="relative overflow-hidden"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
-        {/* 1. Four Main Category Cards */}
-        {categories.map((category) => {
-          const IconComponent = categoryIcons[category.iconName] || Layers
+      {/* Subtle Low-Contrast Grid Background */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,#1f1f2312_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2312_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-70"
+      />
+
+      {/* ============================================================== */}
+      {/* 1. FOUR INTERACTIVE CATEGORY CARDS                             */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-8">
+        {categories.map((cat, idx) => {
+          const isSelected = selectedIdx === idx
+          const Icon = iconMap[cat.iconName] || Code2
+          const skillCount = cat.skills.length
 
           return (
-            <Card
-              key={category.id}
+            <motion.button
+              key={cat.id}
+              type="button"
+              onClick={() => setSelectedIdx(idx)}
+              whileHover={reducedMotion ? {} : { y: -3 }}
+              transition={{ duration: 0.2 }}
               className={cn(
-                "flex flex-col justify-between p-6 h-full",
-                category.colSpan
+                'group relative rounded-xl border p-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                isSelected
+                  ? 'bg-background-surface border-accent/60 shadow-card'
+                  : 'bg-background-surface/60 hover:bg-background-surface border-border/80 hover:border-accent/40'
               )}
             >
-              <div className="space-y-4">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center text-accent shrink-0">
-                      <IconComponent className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-bold text-lg text-foreground">
-                        {category.title}
-                      </h3>
-                      <p className="text-xs text-foreground-muted font-sans line-clamp-1">
-                        {category.description}
-                      </p>
-                    </div>
-                  </div>
+              {/* Highlight Glow for active card */}
+              {isSelected && (
+                <motion.div
+                  layoutId="active-skill-category-indicator"
+                  className="absolute inset-0 rounded-xl bg-accent/5 border border-accent/40 -z-10 shadow-glow"
+                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                />
+              )}
+
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className={cn(
+                    'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
+                    isSelected
+                      ? 'bg-accent/20 text-accent border border-accent/30'
+                      : 'bg-background text-foreground-muted group-hover:text-accent border border-border'
+                  )}
+                >
+                  <Icon className="w-4 h-4" />
                 </div>
 
-                {/* Group 1: Strong Comfort Level */}
-                <div className="pt-2">
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                    <span className="font-mono text-[11px] font-semibold text-accent uppercase tracking-wider">
-                      Strong Proficiency
-                    </span>
-                  </div>
-
-                  <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportConfig}
-                    className="flex flex-wrap gap-1.5"
-                  >
-                    {category.strong.map((skill) => (
-                      <motion.span
-                        key={skill}
-                        variants={chipVariants}
-                        whileHover={reducedMotion ? {} : { scale: 1.05, y: -2 }}
-                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-accent/10 border border-accent/25 text-foreground hover:bg-accent/20 hover:border-accent/40 hover:shadow-subtle transition-all cursor-default select-none"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-                </div>
-
-                {/* Group 2: Working Knowledge */}
-                <div className="pt-3 border-t border-border/70">
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-foreground-muted" />
-                    <span className="font-mono text-[11px] font-medium text-foreground-muted uppercase tracking-wider">
-                      Working Knowledge
-                    </span>
-                  </div>
-
-                  <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportConfig}
-                    className="flex flex-wrap gap-1.5"
-                  >
-                    {category.workingKnowledge.map((skill) => (
-                      <motion.span
-                        key={skill}
-                        variants={chipVariants}
-                        whileHover={reducedMotion ? {} : { scale: 1.05, y: -2 }}
-                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-background-elevated/80 border border-border text-foreground-muted hover:text-foreground hover:border-accent/30 hover:shadow-subtle transition-all cursor-default select-none"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-                </div>
+                <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-background border border-border text-foreground-muted">
+                  {skillCount} skills
+                </span>
               </div>
-            </Card>
+
+              <h3
+                className={cn(
+                  'font-heading font-semibold text-sm transition-colors',
+                  isSelected ? 'text-foreground' : 'text-foreground-muted group-hover:text-foreground'
+                )}
+              >
+                {cat.title}
+              </h3>
+
+              <p className="text-[11px] text-foreground-muted line-clamp-2 mt-1 leading-relaxed">
+                {cat.description}
+              </p>
+            </motion.button>
           )
         })}
+      </div>
 
-        {/* 2. "Currently Exploring" Card with Shifting Gradient Border */}
-        <div className="col-span-1 md:col-span-2 h-full">
-          <GradientBorderCard>
-            <Card
-              className="p-6 h-full flex flex-col justify-between bg-transparent border-0"
-              enableGlow={true}
+      {/* ============================================================== */}
+      {/* 2. DETAIL PANEL & DEVELOPER TERMINAL / CONSTELLATION           */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left: Active Category Skill Details */}
+        <div className="lg:col-span-7">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: reducedMotion ? 0.01 : 0.25, ease: 'easeOut' }}
+              className="rounded-2xl border border-border/80 bg-background-surface/90 backdrop-blur-md p-6 sm:p-7 shadow-card space-y-6"
             >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300">
-                      <Compass className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-heading font-bold text-lg text-foreground">
-                          {currentlyLearning.title}
-                        </h3>
-                        <Badge variant="accent" dot size="sm">Active</Badge>
-                      </div>
-                      <p className="text-xs text-foreground-muted font-sans">
-                        {currentlyLearning.tagline}
-                      </p>
-                    </div>
+              {/* Detail Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border/60 gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center text-accent shrink-0">
+                    <ActiveCategoryIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-lg text-foreground">
+                      {activeCategory.title}
+                    </h4>
+                    <p className="text-xs text-foreground-muted">
+                      {activeCategory.description}
+                    </p>
                   </div>
                 </div>
 
-                {/* Tech Badges */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                  {currentlyLearning.items.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2.5 rounded-lg bg-background-elevated/70 border border-border flex items-center justify-between"
-                    >
-                      <span className="font-mono text-xs text-foreground">
-                        {item.name}
-                      </span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/25">
-                        {item.tag}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                <span className="font-mono text-xs text-accent self-start sm:self-center font-semibold">
+                  {activeCategory.skills.length} verified technologies
+                </span>
               </div>
 
-              <p className="pt-4 mt-2 border-t border-border/70 text-xs font-mono text-foreground-muted leading-relaxed">
-                &gt; {currentlyLearning.note}
-              </p>
-            </Card>
-          </GradientBorderCard>
+              {/* Staggered Skill Items */}
+              <div className="space-y-2.5">
+                {activeCategory.skills.map((skill, index) => (
+                  <motion.div
+                    key={skill.name}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: reducedMotion ? 0.01 : 0.2,
+                      delay: reducedMotion ? 0 : index * 0.04,
+                    }}
+                    whileHover={reducedMotion ? {} : { x: 3 }}
+                    className="p-3.5 rounded-xl bg-background border border-border/70 hover:border-accent/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs group"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-heading font-semibold text-sm text-foreground group-hover:text-accent transition-colors">
+                          {skill.name}
+                        </span>
+                      </div>
+                      <p className="text-xs text-foreground-muted leading-relaxed">
+                        {skill.note}
+                      </p>
+                    </div>
+
+                    <div className="shrink-0">
+                      <StatusBadge status={skill.status} />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* 3. "What I Care About" Principles Card */}
-        <div className="col-span-1 md:col-span-2 h-full">
-          <Card className="p-6 h-full flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center text-accent">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-heading font-bold text-lg text-foreground">
-                    What I Care About
-                  </h3>
-                  <p className="text-xs text-foreground-muted font-sans">
-                    Core engineering values that guide my design decisions
-                  </p>
-                </div>
-              </div>
+        {/* Right: Current Focus Terminal & Tech Constellations */}
+        <div className="lg:col-span-5 space-y-6">
+          {/* Current Focus Terminal */}
+          <FocusTerminal reducedMotion={reducedMotion} />
 
-              {/* Principles List */}
-              <div className="space-y-3 pt-1">
-                {principles.map((principle, idx) => {
-                  const PrincipleIcon = principleIcons[principle.icon] || Check
-
-                  return (
-                    <div
-                      key={idx}
-                      className="p-3 rounded-lg bg-background-elevated/50 border border-border/80 flex items-start gap-3 hover:border-accent/30 transition-colors"
-                    >
-                      <div className="p-1 rounded bg-accent/10 text-accent shrink-0 mt-0.5">
-                        <PrincipleIcon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="font-heading font-semibold text-xs text-foreground">
-                          {principle.title}
-                        </h4>
-                        <p className="text-[11px] text-foreground-muted leading-relaxed mt-0.5">
-                          {principle.summary}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </Card>
+          {/* Interactive Constellation Matrix */}
+          <TechConstellation constellation={constellation} reducedMotion={reducedMotion} />
         </div>
       </div>
     </Section>

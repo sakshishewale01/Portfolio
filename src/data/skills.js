@@ -1,169 +1,188 @@
 /**
- * Technical skills inventory and Bento Grid dataset
- * Grouped cleanly by comfort level ("Strong" & "Working knowledge")
- * Zero percentage bars or star ratings.
+ * Technical skills inventory for Sakshi's Portfolio
+ * Honest, realistic, and tailored for an aspiring software engineer.
  */
 
 export const skillsBento = {
   categories: [
     {
-      id: "ai-ml",
-      title: "AI & Machine Learning",
-      iconName: "Cpu",
-      colSpan: "lg:col-span-2",
-      description: "Deep learning models, predictive telemetry analysis, and automated anomaly classification.",
-      strong: [
-        "Python",
-        "PyTorch",
-        "Scikit-Learn",
-        "Pandas & NumPy",
-        "Time-Series Anomaly Detection",
-        "Model Evaluation Metrics",
-      ],
-      workingKnowledge: [
-        "TensorFlow",
-        "Computer Vision / CNNs",
-        "HuggingFace Transformers",
-        "MLOps & Docker Serving",
-      ],
-    },
-    {
-      id: "backend",
-      title: "Backend & Systems",
-      iconName: "Server",
-      colSpan: "lg:col-span-2",
-      description: "High-concurrency servers, resilient REST/gRPC APIs, transactional databases, and storage layout.",
-      strong: [
-        "Node.js",
-        "Express.js",
-        "FastAPI (Python)",
-        "PostgreSQL",
-        "REST APIs & JSON Schema",
-        "Git Workflows",
-      ],
-      workingKnowledge: [
-        "C / C++",
-        "MongoDB",
-        "Redis Caching",
-        "gRPC & Protobuf",
-        "Docker Containerization",
-        "B+ Tree Storage Internals",
+      id: "programming-core",
+      title: "Programming & Core CS",
+      iconName: "Code2",
+      description: "Core programming languages, algorithms, and object-oriented fundamentals.",
+      skills: [
+        {
+          name: "C++",
+          status: "Practising",
+          note: "Primary language for daily problem solving and algorithmic analysis",
+        },
+        {
+          name: "Java",
+          status: "Familiar with",
+          note: "Object-oriented programming coursework and core language principles",
+        },
+        {
+          name: "Python",
+          status: "Used in projects",
+          note: "Backend APIs, data handling, scripting, and applied ML models",
+        },
+        {
+          name: "Data Structures & Algorithms",
+          status: "Practising",
+          note: "Arrays, trees, graphs, dynamic programming on Striver A2Z & LeetCode",
+        },
+        {
+          name: "Object-Oriented Programming",
+          status: "Familiar with",
+          note: "Inheritance, polymorphism, encapsulation, and modular class design",
+        },
       ],
     },
     {
-      id: "frontend",
-      title: "Frontend Engineering",
+      id: "web-fullstack",
+      title: "Web & Full-Stack",
       iconName: "Layout",
-      colSpan: "lg:col-span-2",
-      description: "Fluid web architectures, custom design systems, responsive layouts, and 60fps gesture interactions.",
-      strong: [
-        "React 18",
-        "JavaScript (ES6+)",
-        "Tailwind CSS v3",
-        "HTML5 Semantic Architecture",
-        "Component-Driven UI",
-      ],
-      workingKnowledge: [
-        "Framer Motion",
-        "Vite & Rollup",
-        "WebSockets & Realtime Feeds",
-        "Accessibility (WCAG & a11y)",
-        "State Management",
+      description: "Frontend and full-stack tools used to build modern, responsive applications.",
+      skills: [
+        {
+          name: "HTML",
+          status: "Used in projects",
+          note: "Semantic document structure and web accessibility standards",
+        },
+        {
+          name: "CSS",
+          status: "Used in projects",
+          note: "Responsive layouts, Flexbox, Grid, and CSS transitions",
+        },
+        {
+          name: "JavaScript",
+          status: "Used in projects",
+          note: "Modern ES6+ syntax, asynchronous programming, and DOM APIs",
+        },
+        {
+          name: "React",
+          status: "Used in projects",
+          note: "Component-driven architecture, custom hooks, and state management",
+        },
+        {
+          name: "Tailwind CSS",
+          status: "Used in projects",
+          note: "Design tokens, utility-first styling, and clean dark themes",
+        },
       ],
     },
     {
-      id: "tools",
-      title: "Tools, DevOps & Cloud",
-      iconName: "Terminal",
-      colSpan: "lg:col-span-2",
-      description: "Developer workflows, version control, container management, and continuous integration.",
-      strong: [
-        "Git & GitHub Workflows",
-        "Linux CLI & Shell Scripting",
-        "Postman & API Validation",
-        "VS Code & Debugging",
+      id: "backend-tools",
+      title: "Backend & Developer Tools",
+      iconName: "Server",
+      description: "API development, database design, version control, and development workflows.",
+      skills: [
+        {
+          name: "FastAPI",
+          status: "Used in projects",
+          note: "High-performance Python REST APIs with Pydantic validation",
+        },
+        {
+          name: "PostgreSQL",
+          status: "Used in projects",
+          note: "Relational database schema modeling, queries, and migrations",
+        },
+        {
+          name: "MySQL",
+          status: "Used in projects",
+          note: "Database management system coursework and structured queries",
+        },
+        {
+          name: "Git and GitHub",
+          status: "Used in projects",
+          note: "Version control, branching strategies, and repository collaboration",
+        },
+        {
+          name: "REST APIs",
+          status: "Used in projects",
+          note: "CRUD routing, client-server communication, and JSON payload handling",
+        },
       ],
-      workingKnowledge: [
-        "Docker Engine",
-        "CI/CD Automation Pipelines",
-        "Nginx Reverse Proxy",
-        "Solidity & Web3 Tooling",
+    },
+    {
+      id: "applied-ai-data",
+      title: "Applied AI & Data",
+      iconName: "Cpu",
+      description: "Applied machine learning tools and exploratory data analysis workflows.",
+      skills: [
+        {
+          name: "Scikit-learn",
+          status: "Used in projects",
+          note: "Classification, regression, and model evaluation workflows",
+        },
+        {
+          name: "Streamlit",
+          status: "Used in projects",
+          note: "Rapid interactive web interfaces and network analysis dashboards",
+        },
+        {
+          name: "Machine Learning",
+          status: "Currently learning",
+          note: "Supervised learning concepts, evaluation metrics, and model tuning",
+        },
+        {
+          name: "Data preprocessing and feature engineering",
+          status: "Used in projects",
+          note: "Cleaning missing values, scaling features, and tabular preparation",
+        },
       ],
     },
   ],
 
-  currentlyLearning: {
-    title: "Currently Exploring",
-    iconName: "Compass",
-    tagline: "Active deep dives into systems engineering and model quantization",
-    items: [
-      { name: "Distributed Consensus (Raft)", tag: "Systems" },
-      { name: "High-Concurrency Go Pipelines", tag: "Backend" },
-      { name: "LLM Inference Quantization (GGUF)", tag: "AI/ML" },
-      { name: "Linux eBPF Network Telemetry", tag: "Kernel" },
+  currentFocus: {
+    title: "CURRENT FOCUS",
+    command: "sakshi --focus",
+    fields: [
+      { key: "current_focus", value: "C++ and DSA" },
+      { key: "practice", value: "Striver A2Z" },
+      { key: "building", value: "Full-stack and applied AI projects" },
+      { key: "goal", value: "Software engineering internships in 2027" },
     ],
-    note: "Deepening low-level performance engineering and sub-millisecond edge model latency.",
   },
 
-  principles: [
+  constellation: [
     {
-      title: "Clean Architecture & Modularity",
-      summary: "Single-responsibility primitives, clear abstractions, and readable codebases that withstand team scale.",
-      icon: "Boxes",
+      id: "react-js",
+      source: "React",
+      target: "JavaScript",
+      description: "Component Architecture ↔ Modern ES6+",
+      category: "Frontend",
     },
     {
-      title: "Low Latency & Efficiency",
-      summary: "Optimized algorithmic time complexity, minimal memory overhead, zero unnecessary re-renders, and fast network round-trips.",
-      icon: "Zap",
+      id: "fastapi-py",
+      source: "FastAPI",
+      target: "Python",
+      description: "High-Performance APIs ↔ Python Ecosystem",
+      category: "Backend",
     },
     {
-      title: "Pragmatic Shipping",
-      summary: "Balancing engineering rigor with rapid iteration, delivering reliable solutions that create measurable real-world impact.",
-      icon: "Flame",
+      id: "postgres-backend",
+      source: "PostgreSQL",
+      target: "Backend Systems",
+      description: "Relational Storage ↔ Data Persistence",
+      category: "Data",
+    },
+    {
+      id: "scikit-ml",
+      source: "Scikit-learn",
+      target: "Machine Learning",
+      description: "Predictive Pipelines ↔ Applied AI",
+      category: "AI",
     },
   ],
 }
 
-// Keep backward compatibility for other components that might import skillCategories
-export const skillCategories = [
-  {
-    category: "AI / Machine Learning",
-    description: "Deep learning models, predictive intelligence, and time-series pipelines",
-    skills: [
-      { name: "Python", level: "Advanced" },
-      { name: "PyTorch", level: "Proficient" },
-      { name: "Scikit-Learn", level: "Proficient" },
-      { name: "Data Analysis & Pandas", level: "Proficient" },
-    ],
-  },
-  {
-    category: "Backend & Systems",
-    description: "High-concurrency servers, resilient APIs, and transactional databases",
-    skills: [
-      { name: "Node.js", level: "Advanced" },
-      { name: "Express.js", level: "Advanced" },
-      { name: "FastAPI", level: "Proficient" },
-      { name: "PostgreSQL", level: "Proficient" },
-    ],
-  },
-  {
-    category: "Frontend Development",
-    description: "Modern, dynamic web architectures, reactive state, and fluid motion",
-    skills: [
-      { name: "React 18", level: "Advanced" },
-      { name: "Tailwind CSS", level: "Advanced" },
-      { name: "JavaScript", level: "Advanced" },
-      { name: "Framer Motion", level: "Proficient" },
-    ],
-  },
-  {
-    category: "Tools & DevOps",
-    description: "Infrastructure orchestration, version control, and containerization",
-    skills: [
-      { name: "Git & GitHub", level: "Advanced" },
-      { name: "Linux", level: "Proficient" },
-      { name: "Docker", level: "Proficient" },
-      { name: "Postman", level: "Proficient" },
-    ],
-  },
-]
+// Backward compatibility for DesignPreview page
+export const skillCategories = skillsBento.categories.map((c) => ({
+  category: c.title,
+  description: c.description,
+  skills: c.skills.map((s) => ({
+    name: s.name,
+    level: s.status,
+  })),
+}))

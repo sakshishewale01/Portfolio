@@ -1,22 +1,25 @@
 /**
  * Journey & Educational Milestones Dataset
- * Tailored for an ambitious aspiring software engineer & CS student.
+ * Includes Cisco Internship, Education at MIT AOE, and Hackathons.
  */
 export const experience = [
   {
-    id: "hackathons-innovation",
-    role: "Hackathon Participant & Innovator",
-    company: "Smart India Hackathon & Trust AI Ideathon",
-    type: "Innovation",
-    period: "2025 — 2026",
-    location: "Pune / National",
-    description: "Collaborated in multidisciplinary student teams tackling national and AI challenges under tight deadlines.",
+    id: "cisco-internship",
+    role: "AI/ML Intern",
+    company: "Cisco",
+    type: "Internship",
+    period: "June 2026 — July 2026",
+    location: "Bengaluru, India (Hybrid)",
+    description: "Developed NetSageAI, applying AI/ML concepts to build an interactive solution for network-related analysis.",
     achievements: [
-      "Collaborated on problem statements for the Smart India Hackathon 2025, architecting rapid prototypes with modern web frameworks.",
-      "Participated in the Trust AI Ideathon 2026, exploring responsible AI workflows, ethical model considerations, and structured validation gates.",
-      "Developed team communication, fast prototyping, and technical presentation skills under competitive hackathon timelines.",
+      "Developed NetSageAI, applying AI/ML concepts to build a solution for network-related analysis.",
+      "Worked on data preprocessing, model development, evaluation, and visualization to deliver an interactive AI/ML solution.",
     ],
-    skills: ["Team Collaboration", "Rapid Prototyping", "Full-Stack", "AI Ideation", "Git"],
+    skills: ["Python", "Streamlit", "AI/ML", "Cisco Packet Tracer", "Git/GitHub"],
+    links: [
+      { label: "Live Demo", url: "TODO" },
+      { label: "GitHub Repository", url: "https://github.com/sakshishewale01" },
+    ],
     icon: "Briefcase",
   },
   {
@@ -26,7 +29,7 @@ export const experience = [
     type: "Education",
     period: "2024 — 2028",
     location: "Pune, India",
-    description: "Rigorous undergraduate curriculum centered on core computer science foundations, algorithms, and practical software development.",
+    description: "Undergraduate computer science curriculum centered on algorithms, software development, and core systems.",
     achievements: [
       "Core coursework in Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, and Computer Networks.",
       "Actively practicing technical problem-solving in C++ using the Striver A2Z DSA sheet and LeetCode.",
@@ -36,19 +39,19 @@ export const experience = [
     icon: "GraduationCap",
   },
   {
-    id: "project-development",
-    role: "Full-Stack & Applied AI Builder",
-    company: "Independent Projects & Open Source",
-    type: "Projects",
-    period: "2024 — Present",
-    location: "Pune, India",
-    description: "Designed, engineered, and deployed modular web applications exploring role-based workflows, real-time collaboration, and applied ML.",
+    id: "hackathons-innovation",
+    role: "Hackathon Participant & Innovator",
+    company: "Smart India Hackathon & Trust AI Ideathon",
+    type: "Innovation",
+    period: "2025 — 2026",
+    location: "Pune / National",
+    description: "Collaborated in student teams tackling practical problem statements under hackathon timelines.",
     achievements: [
-      "Engineered TeamFlow: a live multi-tenant workspace with role-based permissions, Kanban boards, and Supabase real-time updates.",
-      "Developed FlowGrid: a logistics management platform utilizing React, FastAPI, PostgreSQL, and shipment-delay predictions.",
-      "Maintained structured Git repositories with automated linters, documentation, and clean modular codebases.",
+      "Collaborated on problem statements for the Smart India Hackathon 2025, architecting rapid prototypes with modern web frameworks.",
+      "Participated in the Trust AI Ideathon 2026, exploring responsible AI workflows, ethical model considerations, and structured validation gates.",
+      "Developed team communication, fast prototyping, and technical presentation skills under competitive hackathon timelines.",
     ],
-    skills: ["React", "FastAPI", "PostgreSQL", "Tailwind CSS", "Supabase", "Git"],
+    skills: ["Team Collaboration", "Rapid Prototyping", "Full-Stack", "AI Ideation", "Git"],
     icon: "Briefcase",
   },
 ]

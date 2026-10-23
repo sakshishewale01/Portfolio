@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
@@ -8,9 +7,8 @@ import { ArrowUpRight, ChevronDown, Github, ExternalLink, Sparkles } from 'lucid
 import { cn } from '../../lib/utils'
 
 /**
- * Compact Explore Card with hover lift, accent border glow,
- * sliding arrow, and expanding quick preview drawer.
- * Renders TODO fields as subtle "Details coming soon".
+ * Compact Explore Card with direct GitHub and Live Demo links.
+ * Case study links removed for direct accessibility.
  */
 export function ExploreCard({ project, index }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -21,6 +19,8 @@ export function ExploreCard({ project, index }) {
   const isTechTodo = !project.tech || project.tech === 'TODO' || (Array.isArray(project.tech) && project.tech.length === 0)
   const hasGithub = project.githubUrl && project.githubUrl !== 'TODO'
   const hasLive = project.liveUrl && project.liveUrl !== 'TODO'
+
+  const primaryExternalUrl = hasLive ? project.liveUrl : hasGithub ? project.githubUrl : null
 
   return (
     <Card
@@ -50,27 +50,39 @@ export function ExploreCard({ project, index }) {
               </span>
             )}
 
-            <Link
-              to={`/projects/${project.slug}`}
-              aria-label={`View case study for ${project.title}`}
-              className="p-1 rounded-md text-foreground-muted hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            {primaryExternalUrl && (
+              <a
+                href={primaryExternalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${project.title}`}
+                className="p-1 rounded-md text-foreground-muted hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+            )}
           </div>
         </div>
 
         {/* Title */}
-        <Link
-          to={`/projects/${project.slug}`}
-          className="focus-visible:outline-none focus-visible:underline"
-        >
-          <h4 className="font-heading font-bold text-lg text-foreground group-hover:text-accent transition-colors">
+        {primaryExternalUrl ? (
+          <a
+            href={primaryExternalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-visible:outline-none focus-visible:underline inline-block"
+          >
+            <h4 className="font-heading font-bold text-lg text-foreground group-hover:text-accent transition-colors">
+              {project.title}
+            </h4>
+          </a>
+        ) : (
+          <h4 className="font-heading font-bold text-lg text-foreground">
             {project.title}
           </h4>
-        </Link>
+        )}
 
-        {/* Tagline or "Details coming soon" */}
+        {/* Tagline */}
         <p className="mt-2 text-xs text-foreground-muted line-clamp-2 leading-relaxed">
           {isTaglineTodo ? (
             <span className="italic text-foreground-muted/70 flex items-center gap-1">
@@ -86,7 +98,7 @@ export function ExploreCard({ project, index }) {
         <div className="flex flex-wrap gap-1.5 mt-3 pt-2">
           {isTechTodo ? (
             <span className="text-[10px] font-mono text-foreground-muted/50 italic">
-              Tech stack specs coming soon
+              Tech stack specs in progress
             </span>
           ) : (
             (Array.isArray(project.tech) ? project.tech : [project.tech]).map((tool) => (
@@ -108,22 +120,23 @@ export function ExploreCard({ project, index }) {
           onClick={() => setIsExpanded(!isExpanded)}
           className="inline-flex items-center gap-1 text-[11px] font-mono text-foreground-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
         >
-          <span>{isExpanded ? 'Hide info' : 'Quick preview'}</span>
+          <span>{isExpanded ? 'Hide info' : 'Quick overview'}</span>
           <ChevronDown
             className={cn('w-3.5 h-3.5 transition-transform duration-200', isExpanded && 'rotate-180')}
           />
         </button>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {hasGithub && (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`GitHub source for ${project.title}`}
-              className="p-1 rounded text-foreground-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-foreground-muted hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <Github className="w-3.5 h-3.5" />
+              <span>Repo</span>
             </a>
           )}
           {hasLive && (
@@ -132,9 +145,10 @@ export function ExploreCard({ project, index }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Live URL for ${project.title}`}
-              className="p-1 rounded text-foreground-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent font-medium"
             >
               <ExternalLink className="w-3.5 h-3.5" />
+              <span>Live</span>
             </a>
           )}
         </div>
@@ -154,18 +168,9 @@ export function ExploreCard({ project, index }) {
               <p className="leading-relaxed">{project.description}</p>
             ) : (
               <p className="italic text-foreground-muted/70">
-                Comprehensive architecture and case study details for {project.title} are currently being documented.
+                Project overview for {project.title} will be updated once deployment is finalized.
               </p>
             )}
-            <div className="pt-1">
-              <Link
-                to={`/projects/${project.slug}`}
-                className="text-accent text-[11px] font-mono hover:underline inline-flex items-center gap-1 font-medium"
-              >
-                <span>Read case study</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </Link>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

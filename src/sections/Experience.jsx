@@ -38,9 +38,9 @@ export function Experience() {
   return (
     <Section
       id="experience"
-      label="05 // Journey & Milestones"
-      title="Education, Hackathons & Growth"
-      description="Foundational computer science at MIT Academy of Engineering, hackathon problem-solving, and continuous algorithmic practice."
+      label="05 // Experience"
+      title="Education, Hackathons & Experience"
+      description="Academic studies at MIT Academy of Engineering, hackathon problem-solving, and hands-on software development."
     >
       {/* ================= VERTICAL TIMELINE ================= */}
       <div ref={timelineRef} className="relative mb-16 pt-4 pb-8">
@@ -172,6 +172,37 @@ export function Experience() {
                             </span>
                           ))}
                         </div>
+
+                        {/* Experience Links (e.g. Live Demo | GitHub Repo) */}
+                        {item.links && item.links.length > 0 && (
+                          <div className="pt-3 border-t border-border/80 flex flex-wrap items-center gap-2">
+                            {item.links.map((link, idx) => {
+                              const isTodo = !link.url || link.url === 'TODO'
+                              if (isTodo) {
+                                return (
+                                  <span
+                                    key={idx}
+                                    className="text-[10px] font-mono text-foreground-muted/60 bg-background px-2 py-1 rounded-md border border-border/60"
+                                  >
+                                    {link.label} (Coming soon)
+                                  </span>
+                                )
+                              }
+                              return (
+                                <a
+                                  key={idx}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-[11px] font-mono text-accent hover:underline bg-accent/10 border border-accent/25 hover:border-accent/50 px-2.5 py-1 rounded-md transition-colors"
+                                >
+                                  <span>{link.label}</span>
+                                  <ArrowRight className="w-3 h-3" />
+                                </a>
+                              )
+                            })}
+                          </div>
+                        )}
                       </div>
                     </Card>
                   </motion.div>

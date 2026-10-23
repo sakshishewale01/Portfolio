@@ -242,3 +242,23 @@ html.lenis, html.lenis body {
   animation: floatParticle 9s ease-in-out infinite 4s;
   will-change: transform;
 }
+
+/* 3D Rotating Cube Animation for Editorial Contact Section */
+@keyframes rotateCube3D {
+  0% {
+    transform: rotateX(-16deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(-16deg) rotateY(360deg);
+  }
+}
+
+.animate-cube-3d {
+  transform-style: preserve-3d;
+  animation: rotateCube3D 18s linear infinite;
+}
+
+.animate-cube-3d:hover {
+  animation-play-state: paused;
+}
+

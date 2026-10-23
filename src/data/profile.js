@@ -29,6 +29,7 @@ export const profile = {
     "Building practical software, exploring applied AI, and turning ideas into working products.",
 
   location: "Pune, India",
+  email: "sakshishewale05@gmail.com",
   resumeUrl: "/Sakshi_Shewale_Resume.pdf",
 
   bio:
@@ -36,11 +37,9 @@ export const profile = {
 
   about: {
     paragraphs: [
-      "I am a third-year B.Tech CSE student at MIT Academy of Engineering, building my foundation in computer science through coursework, consistent DSA practice, and hands-on projects. I believe the best way to learn engineering is to build, test, debug, and improve real applications.",
-
-      "My projects explore full-stack development, backend engineering, databases, and applied AI/ML. From FlowGrid, a smart logistics and transportation management system with shipment-delay prediction, to TeamFlow, a role-based team and task management application, I focus on understanding how the pieces of a software product work together.",
-
-      "I am currently working toward becoming internship-ready for 2027. I am improving my problem-solving skills in C++, strengthening my understanding of core computer science concepts, and expanding my practical development experience. I am excited to learn from experienced engineers and contribute to meaningful software projects.",
+      "I’m Sakshi Shewale, a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, Pune.",
+      "I enjoy turning ideas into working software. Through hands-on projects, I’m exploring full-stack development, backend systems, databases, and applied machine learning while strengthening my computer science fundamentals.",
+      "Currently, I’m practising DSA in C++, improving my software development skills, and preparing for software engineering internships. I value consistent learning, clean implementation, and understanding how the code I write actually works.",
     ],
 
     education: {
@@ -165,7 +164,7 @@ export const navLinks = [
   { id: "about", label: "About", href: "/#about" },
   { id: "skills", label: "Skills", href: "/#skills" },
   { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "experience", label: "Journey", href: "/#experience" },
+  { id: "experience", label: "Experience", href: "/#experience" },
   { id: "contact", label: "Contact", href: "/#contact" },
 ];
 
