@@ -1,69 +1,85 @@
+
 /**
- * Profile & Personal Information for Sakshi
+ * Profile & Personal Information for Sakshi Shewale
  */
 export const profile = {
   name: "Sakshi",
   fullName: "Sakshi Shewale",
   monogram: "SS",
-  role: "Software & AI/ML Engineer",
-  title: "Computer Engineering B.Tech Student & Software Engineer",
-  availability: "Open to AI / Software Roles • 2027",
+
+  role: "Software Developer",
+  title: "Third-Year B.Tech Computer Science Student",
+  availability: "Open to Software Engineering Internships • 2027",
 
   photo: {
     src: "/images/sakshi.jpg",
-    alt: "Portrait of Sakshi",
+    alt: "Portrait of Sakshi Shewale",
     width: 600,
     height: 750,
   },
 
   rotatingRoles: [
-    "AI Systems Engineer",
+    "Software Developer",
     "Full-Stack Developer",
-    "Distributed Systems Builder",
-    "Algorithmic Problem Solver",
+    "Applied AI/ML Enthusiast",
+    "Problem Solver",
   ],
-  tagline: "Architecting intelligent systems, distributed backend infrastructure, and fluid user experiences.",
+
+  tagline:
+    "Building practical software, exploring applied AI, and turning ideas into working products.",
+
   location: "Pune, India",
   resumeUrl: "/Sakshi_Shewale_Resume.pdf",
-  bio: "Computer Engineering undergraduate focused on the intersection of modern software systems, scalable backends, and applied artificial intelligence. Passionate about engineering production-grade software that solves complex problems with elegance, speed, and precision.",
+
+  bio:
+    "I am a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, passionate about software development, problem-solving, and applied artificial intelligence. I enjoy building full-stack applications, experimenting with machine learning, and learning how to design reliable, maintainable software. I am currently strengthening my data structures and algorithms skills while developing projects that solve practical problems.",
 
   about: {
     paragraphs: [
-      "I am a final-year Computer Engineering undergraduate driven by a commitment to understand how modern computing systems scale from core algorithmic principles to high-throughput, fault-tolerant infrastructure.",
-      "My engineering work bridges distributed backend systems and applied artificial intelligence. Whether optimizing machine learning pipelines for network telemetry anomaly detection during my internship at Cisco or architecting decentralized social protocols and embeddable storage engines, I build for low latency, reliability, and clean separation of concerns.",
-      "I am looking for high-impact Software Engineering and AI/ML roles at forward-thinking engineering companies where I can contribute to mission-critical distributed systems, learn alongside high-caliber engineers, and ship robust software.",
+      "I am a third-year B.Tech CSE student at MIT Academy of Engineering, building my foundation in computer science through coursework, consistent DSA practice, and hands-on projects. I believe the best way to learn engineering is to build, test, debug, and improve real applications.",
+
+      "My projects explore full-stack development, backend engineering, databases, and applied AI/ML. From FlowGrid, a smart logistics and transportation management system with shipment-delay prediction, to TeamFlow, a role-based team and task management application, I focus on understanding how the pieces of a software product work together.",
+
+      "I am currently working toward becoming internship-ready for 2027. I am improving my problem-solving skills in C++, strengthening my understanding of core computer science concepts, and expanding my practical development experience. I am excited to learn from experienced engineers and contribute to meaningful software projects.",
     ],
+
     education: {
-      institution: "Pune Institute of Computer Technology (PICT)",
-      degree: "B.Tech in Computer Engineering",
-      period: "2023 — 2027",
+      institution: "MIT Academy of Engineering",
+      degree: "B.Tech in Computer Science and Engineering",
+      period: "2024 — 2028",
       location: "Pune, India",
-      coursework: "Distributed Systems, Advanced Algorithms & Data Structures, Database Internals, Machine Learning, Operating Systems",
+      coursework:
+        "Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, Computer Networks, and Machine Learning",
     },
+
     highlights: [
       {
-        title: "AI/ML Intern at Cisco",
-        subtitle: "Enterprise Telemetry",
-        description: "Engineered time-series network failure classification models reducing false positive alerts by 28%.",
-        metric: "Cisco Intern",
+        title: "Full-Stack Project Development",
+        subtitle: "TeamFlow & ConferenceFlow",
+        description:
+          "Building web applications involving authentication, role-based access, database integration, and structured workflows.",
+        metric: "Hands-on Projects",
       },
       {
-        title: "B.Tech Computer Engineering",
-        subtitle: "PICT Pune",
-        description: "Rigorous focus on distributed systems, operating system internals, and computational complexity.",
-        metric: "Class of 2027",
+        title: "FlowGrid",
+        subtitle: "Smart Logistics & Transportation",
+        description:
+          "Developing a logistics management platform using React, FastAPI, PostgreSQL, and a machine learning model for shipment-delay prediction.",
+        metric: "Full-Stack + ML",
       },
       {
-        title: "5+ Systems Shipped",
-        subtitle: "Full-Stack & Web3",
-        description: "Engineered production apps spanning decentralized social platforms, workflow engines, and embedded B+ tree databases.",
-        metric: "5 Systems",
+        title: "Hackathons & Innovation",
+        subtitle: "Team-Based Problem Solving",
+        description:
+          "Participated in innovation and hackathon projects, including the Smart India Hackathon 2025 and Trust AI Ideathon 2026.",
+        metric: "Hackathon Experience",
       },
       {
-        title: "450+ Algorithmic Challenges",
-        subtitle: "LeetCode & CodeChef",
-        description: "Extensive problem solving covering dynamic programming, graph theory, trees, and concurrency.",
-        metric: "450+ Solved",
+        title: "DSA & Problem Solving",
+        subtitle: "C++ • Striver A2Z • LeetCode",
+        description:
+          "Practising data structures and algorithms, learning common problem-solving patterns, and preparing for technical interviews.",
+        metric: "Ongoing Practice",
       },
     ],
   },
@@ -72,75 +88,60 @@ export const profile = {
     github: {
       username: "sakshishewale01",
       profileUrl: "https://github.com/sakshishewale01",
-      fallbackRepos: 18,
-      fallbackFollowers: 24,
-      fallbackStars: 15,
     },
     leetcode: {
       username: "sakshishewale",
       profileUrl: "https://leetcode.com/u/sakshishewale",
-      solved: 450,
-      easy: 160,
-      medium: 240,
-      hard: 50,
-      rating: 1785,
-      lastUpdated: "October 2026",
-    },
-    codechef: {
-      username: "sakshishewale",
-      profileUrl: "https://www.codechef.com/users/sakshishewale",
-      rating: 1620,
-      stars: "3★",
-      globalRank: "Top 8%",
-      lastUpdated: "October 2026",
     },
   },
 
   socials: {
-    linkedin: "https://www.linkedin.com/in/sakshishewale",
+    linkedin: "https://www.linkedin.com/in/sakshi-shewale05",
     github: "https://github.com/sakshishewale01",
     leetcode: "https://leetcode.com/u/sakshishewale",
-    codechef: "https://www.codechef.com/users/sakshishewale",
+    portfolio: "https://sakshishewale-portfolio.vercel.app",
   },
 
   stats: [
     {
-      label: "Projects Built",
+      label: "Projects",
       numericValue: 5,
       suffix: "+",
-      description: "Full-stack & AI systems",
+      description: "Full-stack and applied AI projects",
     },
     {
-      label: "LeetCode Solved",
-      numericValue: 450,
+      label: "Hackathons & Ideathons",
+      numericValue: 3,
       suffix: "+",
-      description: "Data structures & algorithms",
+      description: "Collaborative problem-solving experience",
     },
     {
-      label: "Industry Experience",
-      numericValue: 1,
-      suffix: " Internship",
-      description: "AI/ML Intern at Cisco",
+      label: "Learning & Building",
+      numericValue: 100,
+      suffix: "%",
+      description: "Focused on continuous improvement",
     },
   ],
 
   techMarquee: [
+    "C++",
+    "Java",
     "Python",
-    "PyTorch",
-    "React 18",
-    "Node.js",
-    "Docker",
+    "JavaScript",
+    "React",
+    "HTML",
+    "CSS",
     "Tailwind CSS",
     "FastAPI",
     "PostgreSQL",
-    "C++",
-    "Redis",
-    "Solidity",
+    "MySQL",
+    "Streamlit",
     "Git",
-    "gRPC",
-    "TypeScript",
+    "GitHub",
+    "Scikit-learn",
+    "Machine Learning",
   ],
-}
+};
 
 /**
  * Site Navigation Links
@@ -150,6 +151,6 @@ export const navLinks = [
   { id: "about", label: "About", href: "/#about" },
   { id: "skills", label: "Skills", href: "/#skills" },
   { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "experience", label: "Experience", href: "/#experience" },
+  { id: "achievements", label: "Achievements", href: "/#achievements" },
   { id: "contact", label: "Contact", href: "/#contact" },
-]
+];

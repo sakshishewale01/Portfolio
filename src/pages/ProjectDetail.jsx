@@ -1,44 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { projects } from '../data/projects'
 import { NotFound } from './NotFound'
-import { Section } from '../components/ui/Section'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
+import { ProjectVisual } from '../components/projects/ProjectVisual'
+import { WorkflowStepper } from '../components/projects/case-study/WorkflowStepper'
+import { PipelineFlow } from '../components/projects/case-study/PipelineFlow'
+import { NetSageReviewFlow } from '../components/projects/case-study/NetSageReviewFlow'
 import { useLenis } from '../components/layout/SmoothScroll'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { createFadeUp } from '../lib/motion'
-import { 
-  ArrowLeft, 
-  ArrowRight, 
-  Github, 
-  ExternalLink, 
-  CheckCircle2, 
-  Layers, 
-  Cpu, 
-  AlertTriangle, 
-  Sparkles, 
-  Maximize2, 
-  X,
+import {
+  ArrowLeft,
+  ArrowRight,
+  Github,
+  ExternalLink,
+  CheckCircle2,
+  Layers,
+  AlertTriangle,
+  Info,
   Calendar,
   UserCheck,
-  Tag
+  Tag,
+  Users,
+  Compass,
+  Sparkles,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-const tocItems = [
-  { id: 'problem', label: 'Problem & Context' },
-  { id: 'solution-architecture', label: 'Solution & Architecture' },
-  { id: 'features', label: 'Key Features' },
-  { id: 'challenges', label: 'Challenges & Learnings' },
-  { id: 'outcomes', label: 'Outcomes & Metrics' },
-  { id: 'gallery', label: 'Screenshots' },
-]
-
+/**
+ * Case Study Detail Page (`/projects/:slug`)
+ * Dynamically computes sections and TOC items based on non-TODO data.
+ * Features specialized architecture steppers and pipelines.
+ */
 export function ProjectDetail() {
   const { slug } = useParams()
   const { scrollTo } = useLenis()
@@ -49,44 +48,73 @@ export function ProjectDetail() {
   const project = projects[projectIndex]
   const nextProject = projects[(projectIndex + 1) % projects.length]
 
-  const [activeImage, setActiveImage] = useState(null)
-  const lightboxCloseBtnRef = useRef(null)
-
   // Dynamic document title & meta tags
   useDocumentTitle(
     project ? `${project.title} // Case Study` : 'Project Not Found',
     project ? project.tagline : 'Technical engineering case study by Sakshi Shewale.'
   )
 
-  const activeTocSection = useActiveSection(tocItems.map((item) => item.id), {
-    rootMargin: '-20% 0px -60% 0px',
-  })
+  // Compute available sections dynamically - Skip any section whose data is "TODO"
+  const availableSections = useMemo(() => {
+    if (!project) return []
 
-  // Lightbox keyboard and scroll management
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setActiveImage(null)
-      }
+    const sections = [
+      { id: 'overview', label: 'Overview' },
+    ]
+
+    if (project.problem && project.problem !== 'TODO') {
+      sections.push({ id: 'problem', label: 'The Problem' })
     }
 
-    if (activeImage) {
-      document.body.style.overflow = 'hidden'
-      window.addEventListener('keydown', handleKeyDown)
-      setTimeout(() => lightboxCloseBtnRef.current?.focus(), 50)
-    } else {
-      document.body.style.overflow = ''
+    if (project.solution && project.solution !== 'TODO') {
+      sections.push({ id: 'solution', label: 'The Solution' })
     }
 
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleKeyDown)
+    if (project.highlights && project.highlights !== 'TODO' && Array.isArray(project.highlights) && project.highlights.length > 0) {
+      sections.push({ id: 'features', label: 'Key Features' })
     }
-  }, [activeImage])
+
+    // Architecture or Specialized Workflow
+    if (
+      project.workflow ||
+      project.pipeline ||
+      project.slug === 'netsage-ai' ||
+      (project.architecture && project.architecture !== 'TODO')
+    ) {
+      sections.push({ id: 'architecture', label: 'Workflow & Architecture' })
+    }
+
+    if (project.tech && project.tech !== 'TODO' && Array.isArray(project.tech) && project.tech.length > 0) {
+      sections.push({ id: 'tech-stack', label: 'Tech Stack' })
+    }
+
+    if (project.challenges && project.challenges !== 'TODO' && Array.isArray(project.challenges) && project.challenges.length > 0) {
+      sections.push({ id: 'challenges', label: 'Challenges & Decisions' })
+    }
+
+    if (project.outcomes && project.outcomes !== 'TODO' && Array.isArray(project.outcomes) && project.outcomes.length > 0) {
+      sections.push({ id: 'outcomes', label: 'Outcomes & Metrics' })
+    }
+
+    if (project.roadmap && project.roadmap !== 'TODO' && Array.isArray(project.roadmap) && project.roadmap.length > 0) {
+      sections.push({ id: 'roadmap', label: 'Roadmap (Planned)' })
+    }
+
+    return sections
+  }, [project])
+
+  const activeTocSection = useActiveSection(
+    availableSections.map((item) => item.id),
+    { rootMargin: '-20% 0px -60% 0px' }
+  )
 
   if (!project) {
     return <NotFound />
   }
+
+  const hasLiveUrl = project.liveUrl && project.liveUrl !== 'TODO'
+  const hasGithubUrl = project.githubUrl && project.githubUrl !== 'TODO'
+  const isTeam = project.teamSize && project.teamSize !== 'TODO'
 
   return (
     <div className="pt-24 pb-20 w-full">
@@ -106,17 +134,48 @@ export function ProjectDetail() {
           animate="visible"
           className="space-y-6"
         >
+          {/* Category & Status Row */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <Badge variant="accent" size="sm">{project.category}</Badge>
-            <span className="font-mono text-xs text-foreground-muted">&bull; {project.timeline}</span>
+            <Badge variant="accent" size="sm">
+              {project.category}
+            </Badge>
+
+            {project.status && project.status !== 'TODO' ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono border border-border bg-background-elevated">
+                <span
+                  className={cn(
+                    'w-1.5 h-1.5 rounded-full',
+                    project.status === 'Live' ? 'bg-emerald-400' : 'bg-amber-400'
+                  )}
+                />
+                <span>{project.status}</span>
+              </span>
+            ) : (
+              <span className="font-mono text-xs text-foreground-muted">
+                • In Development
+              </span>
+            )}
+
+            {isTeam && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono border border-border bg-background-elevated text-foreground-muted">
+                <Users className="w-3 h-3 text-accent" />
+                <span>Team Project ({project.teamSize} members)</span>
+              </span>
+            )}
           </div>
 
+          {/* Title */}
           <h1 className="font-heading font-bold text-fluid-h1 tracking-tight text-foreground">
             {project.title}
           </h1>
 
+          {/* Tagline */}
           <p className="text-fluid-body text-foreground-muted max-w-3xl leading-relaxed">
-            {project.tagline}
+            {project.tagline && project.tagline !== 'TODO' ? (
+              project.tagline
+            ) : (
+              <span className="italic">Details coming soon</span>
+            )}
           </p>
 
           {/* Metadata Matrix */}
@@ -125,62 +184,87 @@ export function ProjectDetail() {
               <span className="font-mono text-[10px] text-foreground-muted flex items-center gap-1">
                 <UserCheck className="w-3 h-3 text-accent" /> ROLE
               </span>
-              <p className="font-heading font-semibold text-xs text-foreground mt-1">{project.role}</p>
+              <p className="font-heading font-semibold text-xs text-foreground mt-1">
+                {project.myRole && project.myRole !== 'TODO' ? project.myRole : 'Details coming soon'}
+              </p>
             </div>
+
             <div className="p-3 rounded-lg bg-background-surface border border-border">
               <span className="font-mono text-[10px] text-foreground-muted flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-accent" /> TIMELINE
+                <Users className="w-3 h-3 text-accent" /> TEAM
               </span>
-              <p className="font-heading font-semibold text-xs text-foreground mt-1">{project.timeline}</p>
+              <p className="font-heading font-semibold text-xs text-foreground mt-1">
+                {isTeam ? `${project.teamSize} Engineers` : 'Independent Project'}
+              </p>
             </div>
+
             <div className="p-3 rounded-lg bg-background-surface border border-border">
               <span className="font-mono text-[10px] text-foreground-muted flex items-center gap-1">
                 <Tag className="w-3 h-3 text-accent" /> DOMAIN
               </span>
-              <p className="font-heading font-semibold text-xs text-foreground mt-1">{project.category}</p>
+              <p className="font-heading font-semibold text-xs text-foreground mt-1">
+                {project.category}
+              </p>
             </div>
+
             <div className="p-3 rounded-lg bg-background-surface border border-border">
               <span className="font-mono text-[10px] text-foreground-muted flex items-center gap-1">
-                <Layers className="w-3 h-3 text-accent" /> STACK
+                <Layers className="w-3 h-3 text-accent" /> PRIMARY STACK
               </span>
-              <p className="font-heading font-semibold text-xs text-foreground mt-1">{project.tech.slice(0, 2).join(', ')}</p>
+              <p className="font-heading font-semibold text-xs text-foreground mt-1 truncate">
+                {Array.isArray(project.tech) ? project.tech.slice(0, 2).join(', ') : 'Details coming soon'}
+              </p>
             </div>
           </div>
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Button
-              as="a"
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-              size="md"
-              icon={ExternalLink}
-              iconPosition="right"
-            >
-              Live Deployment
-            </Button>
-            <Button
-              as="a"
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="ghost"
-              size="md"
-              icon={Github}
-              iconPosition="left"
-            >
-              Source Repository
-            </Button>
+            {hasLiveUrl && (
+              <Button
+                as="a"
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                size="md"
+                icon={ExternalLink}
+                iconPosition="right"
+              >
+                {project.slug === 'teamflow' ? 'Launch Live TeamFlow Workspace' : 'Live Deployment'}
+              </Button>
+            )}
+
+            {hasGithubUrl && (
+              <Button
+                as="a"
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+                size="md"
+                icon={Github}
+                iconPosition="left"
+              >
+                Source Repository
+              </Button>
+            )}
           </div>
 
-          {/* Hero Main Graphic Frame */}
-          <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border bg-background-surface shadow-card mt-6">
-            <img
-              src={project.image}
-              alt={`${project.title} Interface Overview`}
-              className="w-full h-full object-cover"
+          {/* Educational Disclaimer Note (e.g. for CineFlix) */}
+          {project.note && (
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300">
+              <Info className="w-4 h-4 shrink-0 mt-0.5" />
+              <p className="leading-relaxed">{project.note}</p>
+            </div>
+          )}
+
+          {/* Hero Visual Mockup Frame (Using Reusable ProjectVisual instead of screenshots) */}
+          <div className="w-full rounded-2xl overflow-hidden border border-border bg-background-surface shadow-card mt-6">
+            <ProjectVisual
+              slug={project.slug}
+              accent={project.accent}
+              liveUrl={project.liveUrl}
+              className="min-h-[340px] sm:min-h-[420px]"
             />
           </div>
         </motion.div>
@@ -191,145 +275,224 @@ export function ProjectDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Main Case Study Sections Column */}
           <div className="lg:col-span-8 space-y-14">
-            {/* 1. Problem */}
-            <section id="problem" className="scroll-mt-24 space-y-4">
+            {/* 1. Overview */}
+            <section id="overview" className="scroll-mt-24 space-y-4">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-accent" />
                 <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  The Problem & Context
+                  Overview
                 </h2>
               </div>
               <Card className="p-6">
                 <p className="text-foreground-muted leading-relaxed text-base sm:text-lg">
-                  {project.problem}
+                  {project.description && project.description !== 'TODO' ? (
+                    project.description
+                  ) : (
+                    <span className="italic text-foreground-muted/70 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-accent" />
+                      Detailed project overview is currently being documented.
+                    </span>
+                  )}
                 </p>
               </Card>
             </section>
 
-            {/* 2. Solution & Architecture */}
-            <section id="solution-architecture" className="scroll-mt-24 space-y-4">
+            {/* 2. Problem (rendered only if not TODO) */}
+            {project.problem && project.problem !== 'TODO' && (
+              <section id="problem" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    The Problem & Context
+                  </h2>
+                </div>
+                <Card className="p-6">
+                  <p className="text-foreground-muted leading-relaxed text-base">
+                    {project.problem}
+                  </p>
+                </Card>
+              </section>
+            )}
+
+            {/* 3. Solution (rendered only if not TODO) */}
+            {project.solution && project.solution !== 'TODO' && (
+              <section id="solution" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    The Engineering Solution
+                  </h2>
+                </div>
+                <Card className="p-6">
+                  <p className="text-foreground-muted leading-relaxed text-base">
+                    {project.solution}
+                  </p>
+                </Card>
+              </section>
+            )}
+
+            {/* 4. Key Features & Highlights */}
+            {project.highlights && project.highlights !== 'TODO' && Array.isArray(project.highlights) && project.highlights.length > 0 && (
+              <section id="features" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    Key Features & Technical Capabilities
+                  </h2>
+                </div>
+                <Card className="p-6">
+                  <ul className="space-y-4">
+                    {project.highlights.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                        <span className="text-foreground-muted leading-relaxed text-sm">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </section>
+            )}
+
+            {/* 5. Workflow or Architecture */}
+            <section id="architecture" className="scroll-mt-24 space-y-6">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-accent" />
                 <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  Solution & Architecture
+                  System Architecture & Process Flow
                 </h2>
               </div>
-              <Card className="p-6 space-y-4">
-                <p className="text-foreground-muted leading-relaxed">
-                  {project.solution}
-                </p>
-                <div className="p-4 rounded-xl bg-background border border-border space-y-2">
+
+              {/* Specialized Interactive Views */}
+              {project.slug === 'conference-flow' && (
+                <WorkflowStepper accent={project.accent} />
+              )}
+
+              {project.slug === 'flowgrid' && (
+                <PipelineFlow accent={project.accent} />
+              )}
+
+              {project.slug === 'netsage-ai' && (
+                <NetSageReviewFlow accent={project.accent} />
+              )}
+
+              {/* Textual Architecture Description if provided */}
+              {project.architecture && project.architecture !== 'TODO' && (
+                <Card className="p-6 space-y-3">
                   <h4 className="font-heading font-semibold text-xs text-foreground uppercase tracking-wider font-mono">
-                    System Architecture Overview
+                    Architectural Blueprint & Data Flow
                   </h4>
-                  <p className="text-xs text-foreground-muted font-mono leading-relaxed">
+                  <p className="text-sm text-foreground-muted font-mono leading-relaxed">
                     {project.architecture}
                   </p>
+                </Card>
+              )}
+            </section>
+
+            {/* 6. Tech Stack */}
+            {project.tech && project.tech !== 'TODO' && Array.isArray(project.tech) && project.tech.length > 0 && (
+              <section id="tech-stack" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    Technology Stack & Tooling
+                  </h2>
                 </div>
-              </Card>
-            </section>
-
-            {/* 3. Key Features */}
-            <section id="features" className="scroll-mt-24 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  Key Features & Highlights
-                </h2>
-              </div>
-              <Card className="p-6">
-                <ul className="space-y-4">
-                  {project.highlights.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                      <span className="text-foreground-muted leading-relaxed text-sm">
-                        {item}
+                <Card className="p-6">
+                  <div className="flex flex-wrap gap-2.5">
+                    {project.tech.map((tool) => (
+                      <span
+                        key={tool}
+                        className="px-3 py-1.5 rounded-lg text-xs font-mono bg-background border border-border text-foreground hover:border-accent/40 transition-colors"
+                      >
+                        {tool}
                       </span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </section>
-
-            {/* 4. Challenges & Learnings */}
-            <section id="challenges" className="scroll-mt-24 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  Challenges & Technical Decisions
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                {project.challenges.map((c, idx) => (
-                  <Card key={idx} className="p-6 space-y-2">
-                    <div className="flex items-center gap-2 text-amber-400">
-                      <AlertTriangle className="w-4 h-4" />
-                      <h4 className="font-heading font-semibold text-sm text-foreground">
-                        {c.title}
-                      </h4>
-                    </div>
-                    <p className="text-xs text-foreground-muted leading-relaxed pl-6">
-                      {c.description}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            {/* 5. Outcomes & Metrics */}
-            <section id="outcomes" className="scroll-mt-24 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  Outcomes & Metrics
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {project.outcomes.map((o, idx) => (
-                  <Card key={idx} className="p-5 flex flex-col justify-between">
-                    <div>
-                      <p className="font-mono text-xs text-foreground-muted">{o.label}</p>
-                      <p className="font-heading font-bold text-xl text-accent mt-1">{o.value}</p>
-                    </div>
-                    <p className="font-mono text-[11px] text-foreground-muted mt-3 pt-3 border-t border-border">
-                      {o.note}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            {/* 6. Screenshots Lightbox Gallery */}
-            <section id="gallery" className="scroll-mt-24 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
-                  Visual Telemetry Gallery
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {project.screenshots.map((imgSrc, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => setActiveImage(imgSrc)}
-                    className="relative aspect-[16/10] rounded-xl overflow-hidden border border-border bg-background-surface group cursor-pointer shadow-subtle hover:border-accent/40 transition-colors"
-                  >
-                    <img
-                      src={imgSrc}
-                      alt={`${project.title} Screenshot ${idx + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 text-accent font-mono text-xs border border-accent/40 shadow-glow">
-                        <Maximize2 className="w-3.5 h-3.5" />
-                        <span>Enlarge</span>
-                      </span>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
+                </Card>
+              </section>
+            )}
+
+            {/* 7. Challenges & Learnings */}
+            {project.challenges && project.challenges !== 'TODO' && Array.isArray(project.challenges) && project.challenges.length > 0 && (
+              <section id="challenges" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    Challenges & Engineering Trade-offs
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 gap-4">
+                  {project.challenges.map((c, idx) => (
+                    <Card key={idx} className="p-6 space-y-2">
+                      <div className="flex items-center gap-2 text-amber-400">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <h4 className="font-heading font-semibold text-sm text-foreground">
+                          {c.title}
+                        </h4>
+                      </div>
+                      <p className="text-xs text-foreground-muted leading-relaxed pl-6">
+                        {c.description}
+                      </p>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 8. Outcomes & Metrics */}
+            {project.outcomes && project.outcomes !== 'TODO' && Array.isArray(project.outcomes) && project.outcomes.length > 0 && (
+              <section id="outcomes" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    Outcomes & System Metrics
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {project.outcomes.map((o, idx) => (
+                    <Card key={idx} className="p-5 flex flex-col justify-between">
+                      <div>
+                        <p className="font-mono text-xs text-foreground-muted">{o.label}</p>
+                        <p className="font-heading font-bold text-xl text-accent mt-1">{o.value}</p>
+                      </div>
+                      {o.note && (
+                        <p className="font-mono text-[11px] text-foreground-muted mt-3 pt-3 border-t border-border">
+                          {o.note}
+                        </p>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 9. Roadmap (Planned Features) */}
+            {project.roadmap && project.roadmap !== 'TODO' && Array.isArray(project.roadmap) && project.roadmap.length > 0 && (
+              <section id="roadmap" className="scroll-mt-24 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <h2 className="font-heading font-bold text-fluid-h2 text-foreground">
+                    Roadmap & Future Capabilities
+                  </h2>
+                </div>
+                <Card className="p-6 space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-mono text-accent">
+                    <Compass className="w-4 h-4" />
+                    <span>Planned Architectural Extensions</span>
+                  </div>
+                  <ul className="space-y-2.5 pt-2">
+                    {project.roadmap.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs text-foreground-muted font-mono">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent/60 mt-1.5 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </section>
+            )}
           </div>
 
           {/* Sticky Mini Table of Contents (TOC) Sidebar */}
@@ -339,7 +502,7 @@ export function ProjectDetail() {
                 Table of Contents
               </p>
               <nav className="space-y-1">
-                {tocItems.map((item) => {
+                {availableSections.map((item) => {
                   const isActive = activeTocSection === item.id
 
                   return (
@@ -348,10 +511,10 @@ export function ProjectDetail() {
                       type="button"
                       onClick={() => scrollTo(`#${item.id}`, { offset: -40, duration: 1.0 })}
                       className={cn(
-                        "block w-full text-left text-xs py-1.5 px-2.5 rounded-md transition-all font-mono",
+                        'block w-full text-left text-xs py-1.5 px-2.5 rounded-md transition-all font-mono',
                         isActive
-                          ? "bg-accent/15 text-accent font-medium border-l-2 border-accent"
-                          : "text-foreground-muted hover:text-foreground hover:bg-background-elevated"
+                          ? 'bg-accent/15 text-accent font-medium border-l-2 border-accent'
+                          : 'text-foreground-muted hover:text-foreground hover:bg-background-elevated'
                       )}
                     >
                       {item.label}
@@ -361,30 +524,34 @@ export function ProjectDetail() {
               </nav>
 
               <div className="pt-4 border-t border-border space-y-2">
-                <Button
-                  as="a"
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="ghost"
-                  size="sm"
-                  className="w-full justify-start text-xs"
-                  icon={Github}
-                >
-                  GitHub Repository
-                </Button>
-                <Button
-                  as="a"
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="primary"
-                  size="sm"
-                  className="w-full justify-start text-xs"
-                  icon={ExternalLink}
-                >
-                  Live Deployment
-                </Button>
+                {hasGithubUrl && (
+                  <Button
+                    as="a"
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs"
+                    icon={Github}
+                  >
+                    GitHub Repository
+                  </Button>
+                )}
+                {hasLiveUrl && (
+                  <Button
+                    as="a"
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="primary"
+                    size="sm"
+                    className="w-full justify-start text-xs"
+                    icon={ExternalLink}
+                  >
+                    Live Deployment
+                  </Button>
+                )}
               </div>
             </Card>
           </aside>
@@ -413,7 +580,9 @@ export function ProjectDetail() {
                 {nextProject.title}
               </h3>
               <p className="text-sm text-foreground-muted max-w-xl">
-                {nextProject.tagline}
+                {nextProject.tagline && nextProject.tagline !== 'TODO'
+                  ? nextProject.tagline
+                  : 'Details coming soon'}
               </p>
             </div>
 
@@ -424,42 +593,6 @@ export function ProjectDetail() {
           </Card>
         </Link>
       </section>
-
-      {/* ================= LIGHTBOX MODAL ================= */}
-      <AnimatePresence>
-        {activeImage && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Image Preview Lightbox"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveImage(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-md"
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-5xl w-full max-h-[90vh] rounded-2xl overflow-hidden border border-border bg-background-surface p-2 shadow-card"
-            >
-              <button
-                ref={lightboxCloseBtnRef}
-                type="button"
-                onClick={() => setActiveImage(null)}
-                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-background/80 text-foreground hover:text-accent border border-border"
-                aria-label="Close Lightbox Modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <img
-                src={activeImage}
-                alt="Enlarged Case Study Graphic"
-                className="w-full h-auto max-h-[82vh] object-contain rounded-xl"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

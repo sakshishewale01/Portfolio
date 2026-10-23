@@ -21,11 +21,11 @@ export const experience = [
     icon: "Briefcase",
   },
   {
-    id: "pict-btech",
+    id: "MIT-btech",
     role: "B.Tech in Computer Engineering",
-    company: "Pune Institute of Computer Technology (PICT)",
+    company: "MIT Academy of Engineering, Pune",
     type: "Education",
-    period: "2023 — 2027",
+    period: "2024 — 2028",
     location: "Pune, India",
     description: "Undergraduate curriculum centered on foundational computer science, low-level systems programming, and algorithmic computational complexity.",
     achievements: [
