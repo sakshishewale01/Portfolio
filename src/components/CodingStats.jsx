@@ -1,30 +1,53 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { profile } from '../data/profile'
 import { Card } from './ui/Card'
 import { Badge } from './ui/Badge'
 import { useFetch } from '../hooks/useFetch'
-import { useCountUp } from '../hooks/useCountUp'
 import { useReducedMotion } from '../hooks/useReducedMotion'
-import { 
-  Github, 
-  Code2, 
-  Terminal, 
-  ExternalLink, 
-  GitFork, 
-  Users, 
-  CheckCircle2, 
-  Flame, 
-  Calendar,
+import {
+  Github,
+  Code2,
+  Terminal,
+  ExternalLink,
+  WifiOff,
   Sparkles,
-  WifiOff
+  Calendar,
+  Trophy,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-/**
- * Animated Stat Display Component with useCountUp
- */
-function AnimatedMetric({ target, suffix = '', label, inView = true }) {
-  const count = useCountUp(target, 1600, inView)
+function AnimatedMetric({ target = 0, suffix = '', label, inView }) {
+  const [count, setCount] = useState(0)
+  const reducedMotion = useReducedMotion()
+
+  useEffect(() => {
+    if (!inView || !target) {
+      setCount(target || 0)
+      return
+    }
+
+    if (reducedMotion) {
+      setCount(target)
+      return
+    }
+
+    let start = 0
+    const duration = 1200
+    const increment = target / (duration / 16)
+
+    const timer = setInterval(() => {
+      start += increment
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.ceil(start))
+      }
+    }, 16)
+
+    return () => clearInterval(timer)
+  }, [inView, target, reducedMotion])
 
   return (
     <div>
@@ -38,24 +61,44 @@ function AnimatedMetric({ target, suffix = '', label, inView = true }) {
 }
 
 /**
- * CodingStats component displaying real-time GitHub telemetry,
- * and verified LeetCode + CodeChef competitive programming credentials.
+ * CodingStats component displaying real-time GitHub telemetry
+ * and LeetCode problem-solving progress.
+ * Built defensively to support aspiring engineers without runtime exceptions.
  */
 export function CodingStats() {
   const containerRef = useRef(null)
   const [inView, setInView] = useState(false)
   const reducedMotion = useReducedMotion()
 
-  const { github, leetcode, codechef } = profile.codingProfiles
+  const codingProfiles = profile.codingProfiles || {}
+  const github = codingProfiles.github || {
+    username: 'sakshishewale01',
+    profileUrl: 'https://github.com/sakshishewale01',
+    fallbackRepos: profile.repoCount || 34,
+    fallbackFollowers: 5,
+  }
 
-  // 1. Fetch GitHub data with sessionStorage caching & static fallback
+  const leetcode = codingProfiles.leetcode || {
+    username: 'sakshishewale',
+    profileUrl: 'https://leetcode.com/u/sakshishewale',
+    solved: 50,
+    easy: 30,
+    medium: 20,
+    hard: 0,
+    rating: 1400,
+    lastUpdated: 'Ongoing',
+  }
+
+  const codechef = codingProfiles.codechef
+
+  // Fetch GitHub data with sessionStorage caching & static fallback
   const githubFallback = {
-    public_repos: github.fallbackRepos,
-    followers: github.fallbackFollowers,
+    public_repos: github.fallbackRepos || profile.repoCount || 34,
+    followers: github.fallbackFollowers || 5,
   }
 
   const { data: githubData, loading: githubLoading, isFallback: isGithubFallback } = useFetch(
-    `https://api.github.com/users/${github.username}`,
+    github.username ? `https://api.github.com/users/${github.username}` : null,
     githubFallback
   )
 
@@ -76,16 +119,18 @@ export function CodingStats() {
     return () => observer.disconnect()
   }, [])
 
+  const hasCodeChef = Boolean(codechef && codechef.username)
+
   return (
     <div ref={containerRef} className="space-y-6 pt-10">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border/80">
         <div>
           <h3 className="font-heading font-bold text-xl sm:text-2xl text-foreground flex items-center gap-2">
-            <span>Competitive Programming &amp; Open Source</span>
+            <span>Problem Solving &amp; Open Source</span>
             <Sparkles className="w-4 h-4 text-accent" />
           </h3>
           <p className="text-xs text-foreground-muted font-sans mt-0.5">
-            Continuous algorithmic problem solving and open code repositories
+            Consistent algorithmic practice, project repositories, and technical growth
           </p>
         </div>
 
@@ -101,7 +146,12 @@ export function CodingStats() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        className={cn(
+          'grid grid-cols-1 gap-6',
+          hasCodeChef ? 'md:grid-cols-3' : 'md:grid-cols-2'
+        )}
+      >
         {/* ================= CARD 1: GITHUB ================= */}
         <Card className="flex flex-col justify-between p-6 h-full">
           <div className="space-y-4">
@@ -121,15 +171,17 @@ export function CodingStats() {
                 </div>
               </div>
 
-              <a
-                href={github.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors"
-                aria-label="GitHub Profile Link"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              {github.profileUrl && (
+                <a
+                  href={github.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  aria-label="GitHub Profile Link"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
             </div>
 
             {/* Metrics */}
@@ -139,7 +191,7 @@ export function CodingStats() {
                   <div className="h-8 w-16 bg-background rounded animate-pulse" />
                 ) : (
                   <AnimatedMetric
-                    target={githubData?.public_repos || github.fallbackRepos}
+                    target={githubData?.public_repos || githubFallback.public_repos}
                     label="Public Repos"
                     inView={inView}
                   />
@@ -150,7 +202,7 @@ export function CodingStats() {
                   <div className="h-8 w-16 bg-background rounded animate-pulse" />
                 ) : (
                   <AnimatedMetric
-                    target={githubData?.followers || github.fallbackFollowers}
+                    target={githubData?.followers || githubFallback.followers}
                     label="Followers"
                     inView={inView}
                   />
@@ -158,13 +210,13 @@ export function CodingStats() {
               </div>
             </div>
 
-            {/* Contribution Heatmap (Keyless & Free) */}
+            {/* Contribution Heatmap */}
             <div className="pt-2">
               <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-wider block mb-1.5">
                 Contribution Activity
               </span>
               <div className="rounded-lg bg-background-elevated p-2 border border-border overflow-hidden">
-                {!heatmapFailed ? (
+                {!heatmapFailed && github.username ? (
                   <img
                     src={`https://ghchart.rshah.org/7c5cff/${github.username}`}
                     alt="GitHub Contribution Heatmap"
@@ -174,7 +226,7 @@ export function CodingStats() {
                   />
                 ) : (
                   <div className="h-10 flex items-center justify-center font-mono text-[10px] text-foreground-muted">
-                    [Activity Stream Verified On-Chain]
+                    [Activity Stream Active on GitHub]
                   </div>
                 )}
               </div>
@@ -206,52 +258,53 @@ export function CodingStats() {
                 </div>
               </div>
 
-              <a
-                href={leetcode.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors"
-                aria-label="LeetCode Profile Link"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              {leetcode.profileUrl && (
+                <a
+                  href={leetcode.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  aria-label="LeetCode Profile Link"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
             </div>
 
-            {/* Solved Count & Rating */}
+            {/* Solved Count & Learning Focus */}
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="p-3 rounded-lg bg-background-elevated/70 border border-border">
                 <AnimatedMetric
-                  target={leetcode.solved}
+                  target={leetcode.solved || 50}
                   suffix="+"
                   label="Problems Solved"
                   inView={inView}
                 />
               </div>
-              <div className="p-3 rounded-lg bg-background-elevated/70 border border-border">
-                <AnimatedMetric
-                  target={leetcode.rating}
-                  label="Contest Rating"
-                  inView={inView}
-                />
+              <div className="p-3 rounded-lg bg-background-elevated/70 border border-border flex flex-col justify-center">
+                <div className="font-heading font-bold text-lg sm:text-xl text-amber-400">
+                  C++ &amp; Striver A2Z
+                </div>
+                <p className="font-mono text-[11px] text-foreground-muted mt-0.5">Primary Focus</p>
               </div>
             </div>
 
-            {/* Difficulty Breakdown */}
+            {/* Difficulty Breakdown / Pattern Mastery */}
             <div className="space-y-2 pt-1">
               <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-wider block">
                 Problem Breakdown
               </span>
               <div className="grid grid-cols-3 gap-2 text-center font-mono">
                 <div className="p-2 rounded bg-emerald-500/10 border border-emerald-500/20">
-                  <p className="text-emerald-400 font-bold text-sm">{leetcode.easy}</p>
+                  <p className="text-emerald-400 font-bold text-sm">{leetcode.easy || 30}</p>
                   <p className="text-[10px] text-foreground-muted">Easy</p>
                 </div>
                 <div className="p-2 rounded bg-amber-500/10 border border-amber-500/20">
-                  <p className="text-amber-400 font-bold text-sm">{leetcode.medium}</p>
+                  <p className="text-amber-400 font-bold text-sm">{leetcode.medium || 20}</p>
                   <p className="text-[10px] text-foreground-muted">Medium</p>
                 </div>
                 <div className="p-2 rounded bg-rose-500/10 border border-rose-500/20">
-                  <p className="text-rose-400 font-bold text-sm">{leetcode.hard}</p>
+                  <p className="text-rose-400 font-bold text-sm">{leetcode.hard || 0}</p>
                   <p className="text-[10px] text-foreground-muted">Hard</p>
                 </div>
               </div>
@@ -260,81 +313,69 @@ export function CodingStats() {
 
           <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-xs font-mono text-foreground-muted">
             <span className="flex items-center gap-1">
-              <Calendar className="w-3 h-3 text-accent" /> Last Updated
+              <Calendar className="w-3 h-3 text-accent" /> Status
             </span>
-            <span>{leetcode.lastUpdated}</span>
+            <span>{leetcode.lastUpdated || 'Consistent Practice'}</span>
           </div>
         </Card>
 
-        {/* ================= CARD 3: CODECHEF ================= */}
-        <Card className="flex flex-col justify-between p-6 h-full">
-          <div className="space-y-4">
-            {/* Header */}
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400">
-                  <Terminal className="w-5 h-5" />
+        {/* ================= OPTIONAL CARD 3: CODECHEF (if configured) ================= */}
+        {hasCodeChef && (
+          <Card className="flex flex-col justify-between p-6 h-full">
+            <div className="space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400">
+                    <Terminal className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-base text-foreground">
+                      CodeChef
+                    </h4>
+                    <p className="font-mono text-xs text-foreground-muted">
+                      @{codechef.username}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-heading font-bold text-base text-foreground">
-                    CodeChef
-                  </h4>
-                  <p className="font-mono text-xs text-foreground-muted">
-                    @{codechef.username}
-                  </p>
-                </div>
+
+                {codechef.profileUrl && (
+                  <a
+                    href={codechef.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors"
+                    aria-label="CodeChef Profile Link"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
 
-              <a
-                href={codechef.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg bg-background-elevated hover:bg-accent/15 hover:text-accent text-foreground-muted border border-border transition-colors"
-                aria-label="CodeChef Profile Link"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3 rounded-lg bg-background-elevated/70 border border-border">
+                  <AnimatedMetric
+                    target={codechef.rating || 0}
+                    label="Division Rating"
+                    inView={inView}
+                  />
+                </div>
+                <div className="p-3 rounded-lg bg-background-elevated/70 border border-border flex flex-col justify-center">
+                  <div className="font-heading font-bold text-2xl text-orange-400">
+                    {codechef.stars || '1★'}
+                  </div>
+                  <p className="font-mono text-[11px] text-foreground-muted mt-0.5">Rating Tier</p>
+                </div>
+              </div>
             </div>
 
-            {/* Rating & Star Badge */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3 rounded-lg bg-background-elevated/70 border border-border">
-                <AnimatedMetric
-                  target={codechef.rating}
-                  label="Division Rating"
-                  inView={inView}
-                />
-              </div>
-              <div className="p-3 rounded-lg bg-background-elevated/70 border border-border flex flex-col justify-center">
-                <div className="font-heading font-bold text-2xl sm:text-3xl text-orange-400">
-                  {codechef.stars}
-                </div>
-                <p className="font-mono text-[11px] text-foreground-muted mt-0.5">Rating Tier</p>
-              </div>
-            </div>
-
-            {/* Highlights Badge Banner */}
-            <div className="p-3.5 rounded-lg bg-background-elevated/50 border border-border space-y-1.5">
-              <span className="font-mono text-[10px] text-foreground-muted uppercase tracking-wider block">
-                Rank Standing
+            <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-xs font-mono text-foreground-muted">
+              <span className="flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-accent" /> Last Updated
               </span>
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-foreground">Global Percentile:</span>
-                <span className="text-accent font-semibold">{codechef.globalRank}</span>
-              </div>
-              <p className="text-[11px] text-foreground-muted leading-relaxed">
-                Active participant in long and lunchtime rated algorithmic contests.
-              </p>
+              <span>{codechef.lastUpdated || 'Ongoing'}</span>
             </div>
-          </div>
-
-          <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-xs font-mono text-foreground-muted">
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3 h-3 text-accent" /> Last Updated
-            </span>
-            <span>{codechef.lastUpdated}</span>
-          </div>
-        </Card>
+          </Card>
+        )}
       </div>
     </div>
   )

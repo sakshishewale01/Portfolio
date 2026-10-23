@@ -88,10 +88,18 @@ export const profile = {
     github: {
       username: "sakshishewale01",
       profileUrl: "https://github.com/sakshishewale01",
+      fallbackRepos: 34,
+      fallbackFollowers: 5,
     },
     leetcode: {
       username: "sakshishewale",
       profileUrl: "https://leetcode.com/u/sakshishewale",
+      solved: 50,
+      easy: 30,
+      medium: 20,
+      hard: 0,
+      rating: 1400,
+      lastUpdated: "Consistent Practice",
     },
   },
 
@@ -101,6 +109,12 @@ export const profile = {
     leetcode: "https://leetcode.com/u/sakshishewale",
     portfolio: "https://sakshishewale-portfolio.vercel.app",
   },
+
+  projectStats: {
+    featured: 5,
+    total: 11,
+  },
+  repoCount: 34,
 
   stats: [
     {
@@ -151,6 +165,7 @@ export const navLinks = [
   { id: "about", label: "About", href: "/#about" },
   { id: "skills", label: "Skills", href: "/#skills" },
   { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "achievements", label: "Achievements", href: "/#achievements" },
+  { id: "experience", label: "Journey", href: "/#experience" },
   { id: "contact", label: "Contact", href: "/#contact" },
 ];
+

@@ -1,40 +1,54 @@
 /**
- * Work & Educational Experience Timeline Dataset
- * Adding new timeline milestones is purely a data-driven change.
+ * Journey & Educational Milestones Dataset
+ * Tailored for an ambitious aspiring software engineer & CS student.
  */
 export const experience = [
   {
-    id: "cisco-internship",
-    role: "AI/ML Intern",
-    company: "Cisco Systems",
-    type: "Internship",
-    period: "May 2024 — July 2024",
-    location: "Bengaluru, India (Hybrid)",
-    description: "Engineered deep learning pipelines and telemetry anomaly detection architectures for enterprise network infrastructure.",
+    id: "hackathons-innovation",
+    role: "Hackathon Participant & Innovator",
+    company: "Smart India Hackathon & Trust AI Ideathon",
+    type: "Innovation",
+    period: "2025 — 2026",
+    location: "Pune / National",
+    description: "Collaborated in multidisciplinary student teams tackling national and AI challenges under tight deadlines.",
     achievements: [
-      "Engineered machine learning pipelines for predictive network failure classification across enterprise telemetry data streams.",
-      "Fine-tuned time-series anomaly detection algorithms, reducing false positive alert generation by 28%.",
-      "Collaborated with senior infrastructure engineers to benchmark model inference latency in production edge environments.",
-      "Containerized model serving workloads using Docker and integrated automated validation into internal CI/CD pipelines.",
+      "Collaborated on problem statements for the Smart India Hackathon 2025, architecting rapid prototypes with modern web frameworks.",
+      "Participated in the Trust AI Ideathon 2026, exploring responsible AI workflows, ethical model considerations, and structured validation gates.",
+      "Developed team communication, fast prototyping, and technical presentation skills under competitive hackathon timelines.",
     ],
-    skills: ["Python", "PyTorch", "Scikit-Learn", "Docker", "Network Telemetry", "Time Series"],
+    skills: ["Team Collaboration", "Rapid Prototyping", "Full-Stack", "AI Ideation", "Git"],
     icon: "Briefcase",
   },
   {
-    id: "MIT-btech",
-    role: "B.Tech in Computer Engineering",
+    id: "mit-btech",
+    role: "B.Tech in Computer Science & Engineering",
     company: "MIT Academy of Engineering, Pune",
     type: "Education",
     period: "2024 — 2028",
     location: "Pune, India",
-    description: "Undergraduate curriculum centered on foundational computer science, low-level systems programming, and algorithmic computational complexity.",
+    description: "Rigorous undergraduate curriculum centered on core computer science foundations, algorithms, and practical software development.",
     achievements: [
-      "Specialized coursework in Distributed Systems, Operating Systems Internals, Database Architecture, and Machine Learning.",
-      "Built custom systems software projects including embedded key-value storage engines (B+ trees) and decentralized social protocols.",
-      "Maintained consistent academic distinction while contributing to technical societies and open-source software initiatives.",
-      "Solved 450+ computational algorithm challenges across LeetCode, CodeChef, and competitive programming platforms.",
+      "Core coursework in Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, and Computer Networks.",
+      "Actively practicing technical problem-solving in C++ using the Striver A2Z DSA sheet and LeetCode.",
+      "Built multiple full-stack and applied AI applications (TeamFlow, FlowGrid, ConferenceFlow) to connect theory with working products.",
     ],
-    skills: ["Algorithms & Data Structures", "Distributed Systems", "C++", "OS Internals", "Computer Networks"],
+    skills: ["Data Structures & Algorithms", "C++", "DBMS", "Computer Networks", "OOP"],
     icon: "GraduationCap",
+  },
+  {
+    id: "project-development",
+    role: "Full-Stack & Applied AI Builder",
+    company: "Independent Projects & Open Source",
+    type: "Projects",
+    period: "2024 — Present",
+    location: "Pune, India",
+    description: "Designed, engineered, and deployed modular web applications exploring role-based workflows, real-time collaboration, and applied ML.",
+    achievements: [
+      "Engineered TeamFlow: a live multi-tenant workspace with role-based permissions, Kanban boards, and Supabase real-time updates.",
+      "Developed FlowGrid: a logistics management platform utilizing React, FastAPI, PostgreSQL, and shipment-delay predictions.",
+      "Maintained structured Git repositories with automated linters, documentation, and clean modular codebases.",
+    ],
+    skills: ["React", "FastAPI", "PostgreSQL", "Tailwind CSS", "Supabase", "Git"],
+    icon: "Briefcase",
   },
 ]
