@@ -157,6 +157,24 @@ export function Hero() {
         <div className="absolute top-1/3 -right-20 w-[460px] h-[460px] rounded-full bg-indigo-600/10 blur-[140px] animate-orb-2" />
       </div>
 
+      {/* Layer 2.5: Ambient Floating Tech Chips (transform only, paused on reduced motion) */}
+      {!reducedMotion && (
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden md:block select-none" aria-hidden="true">
+          <div className="absolute top-[20%] right-[15%] px-3 py-1.5 rounded-full bg-background-elevated/60 border border-border/50 text-[11px] font-mono text-accent/80 backdrop-blur-xs animate-float-particle-1 shadow-subtle flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>C++ &amp; DSA</span>
+          </div>
+          <div className="absolute top-[55%] right-[8%] px-3 py-1.5 rounded-full bg-background-elevated/60 border border-border/50 text-[11px] font-mono text-foreground-muted backdrop-blur-xs animate-float-particle-2 shadow-subtle flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+            <span>FastAPI &bull; React</span>
+          </div>
+          <div className="absolute bottom-[28%] left-[8%] px-3 py-1.5 rounded-full bg-background-elevated/60 border border-border/50 text-[11px] font-mono text-foreground-muted backdrop-blur-xs animate-float-particle-3 shadow-subtle flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span>LeetCode Active</span>
+          </div>
+        </div>
+      )}
+
       {/* Layer 3: Soft Cursor-Following Spotlight (Desktop Only) */}
       {!isTouchDevice && !reducedMotion && (
         <motion.div
@@ -302,15 +320,17 @@ export function Hero() {
             >
               <Code2 className="w-4 h-4" />
             </a>
-            <a
-              href={profile.socials.codechef}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="CodeChef Profile"
-              className="p-2 rounded-lg bg-background-surface/80 hover:bg-background-elevated border border-border hover:border-accent/40 text-foreground-muted hover:text-foreground hover:-translate-y-0.5 transition-all duration-200 shadow-subtle"
-            >
-              <Terminal className="w-4 h-4" />
-            </a>
+            {profile.socials.codechef && (
+              <a
+                href={profile.socials.codechef}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="CodeChef Profile"
+                className="p-2 rounded-lg bg-background-surface/80 hover:bg-background-elevated border border-border hover:border-accent/40 text-foreground-muted hover:text-foreground hover:-translate-y-0.5 transition-all duration-200 shadow-subtle"
+              >
+                <Terminal className="w-4 h-4" />
+              </a>
+            )}
           </motion.div>
 
           {/* 7. Stats Row with Count-Up Animation */}

@@ -138,7 +138,8 @@ export function Skills() {
                       <motion.span
                         key={skill}
                         variants={chipVariants}
-                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-accent/10 border border-accent/25 text-foreground hover:bg-accent/20 hover:border-accent/40 transition-colors cursor-default"
+                        whileHover={reducedMotion ? {} : { scale: 1.05, y: -2 }}
+                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-accent/10 border border-accent/25 text-foreground hover:bg-accent/20 hover:border-accent/40 hover:shadow-subtle transition-all cursor-default select-none"
                       >
                         {skill}
                       </motion.span>
@@ -166,7 +167,8 @@ export function Skills() {
                       <motion.span
                         key={skill}
                         variants={chipVariants}
-                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-background-elevated/80 border border-border text-foreground-muted hover:text-foreground hover:border-border-hover transition-colors cursor-default"
+                        whileHover={reducedMotion ? {} : { scale: 1.05, y: -2 }}
+                        className="font-mono text-xs px-2.5 py-1 rounded-md bg-background-elevated/80 border border-border text-foreground-muted hover:text-foreground hover:border-accent/30 hover:shadow-subtle transition-all cursor-default select-none"
                       >
                         {skill}
                       </motion.span>
