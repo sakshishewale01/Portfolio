@@ -11,13 +11,13 @@ import { Photo } from '../components/ui/Photo'
 import { useLenis } from '../components/layout/SmoothScroll'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useCountUp } from '../hooks/useCountUp'
-import { 
-  ArrowDown, 
-  FileText, 
-  Github, 
-  Linkedin, 
-  Code2, 
-  Terminal, 
+import {
+  ArrowDown,
+  FileText,
+  Github,
+  Linkedin,
+  Code2,
+  Terminal,
   Sparkles,
   MapPin,
   GraduationCap
@@ -352,24 +352,6 @@ export function Hero() {
                     imageClassName="transition-transform duration-700 ease-out group-hover:scale-102"
                   />
 
-                  {/* Top-Left Floating Badge */}
-                  <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/85 backdrop-blur-md border border-white/10 text-emerald-400 font-mono text-[11px] shadow-subtle">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                      </span>
-                      <span className="font-medium text-emerald-300">Available 2027</span>
-                    </div>
-                  </div>
-
-                  {/* Top-Right Floating Tech Pill */}
-                  <div className="absolute top-3.5 right-3.5 z-20 pointer-events-none">
-                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-background/85 backdrop-blur-md border border-accent/30 text-accent font-mono text-[10px] shadow-subtle">
-                      <Sparkles className="w-3 h-3" />
-                      <span>C++ &bull; React &bull; FastAPI</span>
-                    </div>
-                  </div>
 
                   {/* Gradient Vignette at Bottom */}
                   <div
