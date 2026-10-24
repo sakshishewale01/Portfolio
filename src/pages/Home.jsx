@@ -5,7 +5,6 @@ import { Hero } from '../sections/Hero'
 const About = lazy(() => import('../sections/About').then(m => ({ default: m.About })))
 const Skills = lazy(() => import('../sections/Skills').then(m => ({ default: m.Skills })))
 const Projects = lazy(() => import('../sections/Projects').then(m => ({ default: m.Projects })))
-const Achievements = lazy(() => import('../sections/Achievements').then(m => ({ default: m.Achievements })))
 const Experience = lazy(() => import('../sections/Experience').then(m => ({ default: m.Experience })))
 const Contact = lazy(() => import('../sections/Contact').then(m => ({ default: m.Contact })))
 
@@ -66,10 +65,6 @@ export function Home() {
 
       <LazySection id="projects" minHeight="700px">
         <Projects />
-      </LazySection>
-
-      <LazySection id="achievements" minHeight="550px">
-        <Achievements />
       </LazySection>
 
       <LazySection id="experience" minHeight="650px">

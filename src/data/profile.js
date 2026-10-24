@@ -42,7 +42,7 @@ export const profile = {
     paragraphs: [
       "I'm Sakshi Shewale, a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, Pune.",
       "I believe the best way to understand computer science is by building real things. Through hands-on projects, I design web applications with structured backend workflows, role-based access, and clean database schemas—such as FlowGrid (logistics management with ML delay prediction) and TeamFlow (real-time collaborative task workspace).",
-      "Right now, I am actively sharpening my algorithmic problem-solving skills in C++ using the Striver A2Z DSA sheet and LeetCode. I care deeply about writing readable code, understanding how systems work under the hood, and collaborating effectively in team environments.",
+      "Right now, I am actively sharpening my algorithmic problem-solving skills in C++ using LeetCode. I care deeply about writing readable code, understanding how systems work under the hood, and collaborating effectively in team environments.",
     ],
 
     education: {
@@ -108,7 +108,7 @@ export const profile = {
         subtitle: "C++  • LeetCode",
         description:
           "Active daily problem solving in C++, covering foundational to advanced algorithmic patterns.",
-        metric: "51+ Solved",
+        metric: "50+ Solved",
       },
     ],
   },
@@ -117,23 +117,22 @@ export const profile = {
     {
       id: "trust-ai-ideathon-2026",
       title: "Trust AI Ideathon 2026",
-      award: "2nd Runner Up & Top 20 Finalist",
+      award: "Top 20 Finalist",
       year: "2026",
       organization: "National Level AI Ideathon",
       description:
         "Selected in the Top 20 nationally and secured 2nd Runner Up for conceptualizing and designing a responsible, ethical AI validation framework with structured governance checks.",
       tags: ["Responsible AI", "System Design", "Ethical AI", "Innovation"],
       verified: true,
-      badge: "2nd Runner Up",
     },
     {
       id: "datathon-2026",
       title: "Datathon 2026",
-      award: "National Finalist",
+      award: "MITAOE Datathon Finalist",
       year: "2026",
       organization: "Competitive Data & ML Challenge",
       description:
-        "Qualified as a national finalist, competing against engineering teams on real-world data preprocessing, feature engineering, and predictive modeling tasks.",
+        "Qualified as a finalist, competing against engineering teams on real-world data preprocessing, feature engineering, and predictive modeling tasks.",
       tags: ["Data Science", "Machine Learning", "Scikit-learn", "Python"],
       verified: true,
       badge: "Finalist",
@@ -149,6 +148,17 @@ export const profile = {
       tags: ["Cisco", "Networking", "AI/ML", "Streamlit"],
       verified: true,
       badge: "Internship",
+    },
+    {
+      id: "smart-india-hackathon-2026",
+      title: "Smart India Hackathon 2026",
+      award: "Internal Finalist",
+      year: "2026",
+      organization: "Ministry of Education & AICTE",
+      description:
+        "Selected as a  finalist for solving practical problem statements with a rapid, full-stack prototype.",
+      tags: ["Full-Stack", "Rapid Prototyping", "Innovation", "System Design"],
+      verified: true,
     },
   ],
 
@@ -195,13 +205,13 @@ export const profile = {
       label: "Hackathons & Awards",
       numericValue: 3,
       suffix: "+",
-      description: "National finalist & 2nd runner up honors",
+      description: "finalist & runner up honors",
     },
     {
       label: "DSA Solved (C++)",
       numericValue: 51,
       suffix: "+",
-      description: "Striver A2Z sheet and LeetCode problems",
+      description: "LeetCode problems",
     },
   ],
 
@@ -233,7 +243,6 @@ export const navLinks = [
   { id: "about", label: "About", href: "/#about" },
   { id: "skills", label: "Skills", href: "/#skills" },
   { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "achievements", label: "Achievements", href: "/#achievements" },
   { id: "experience", label: "Journey", href: "/#experience" },
   { id: "contact", label: "Contact", href: "/#contact" },
 ];

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { skillsBento } from '../data/skills'
+import React from 'react'
+import { motion } from 'framer-motion'
 import { Section } from '../components/ui/Section'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { createFadeUp, viewportConfig } from '../lib/motion'
@@ -8,402 +7,223 @@ import {
   Code2,
   Layout,
   Server,
+  Database,
   Cpu,
   Terminal,
-  Database,
-  Sparkles,
   Layers,
-  ArrowRight,
-  GitBranch,
-  Network,
-  CheckCircle2,
+  Sparkles,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-const iconMap = {
-  Code2: Code2,
-  Layout: Layout,
-  Server: Server,
-  Database: Database,
-  Cpu: Cpu,
-  Terminal: Terminal,
-}
+// Six cleanly organized technical categories
+const skillCategories = [
+  {
+    id: 'programming-languages',
+    title: 'Programming Languages',
+    icon: Code2,
+    skills: [
+      { name: 'C++', status: 'Practising', note: 'Primary language for DSA & algorithmic problem solving' },
+      { name: 'Python', status: 'Used in projects', note: 'Backend APIs, data analysis & applied machine learning' },
+      { name: 'Java', status: 'Familiar with', note: 'Object-oriented programming coursework & core concepts' },
+      { name: 'JavaScript', status: 'Used in projects', note: 'Modern ES6+ syntax for web applications' },
+    ],
+  },
+  {
+    id: 'frontend-development',
+    title: 'Frontend Development',
+    icon: Layout,
+    skills: [
+      { name: 'React', status: 'Used in projects', note: 'Component architecture, custom hooks & state management' },
+      { name: 'HTML5', status: 'Used in projects', note: 'Semantic page structure & accessible elements' },
+      { name: 'CSS3', status: 'Used in projects', note: 'Responsive design, Flexbox, Grid & micro-animations' },
+      { name: 'Tailwind CSS', status: 'Used in projects', note: 'Utility-first styling & custom design tokens' },
+    ],
+  },
+  {
+    id: 'backend-development',
+    title: 'Backend Development',
+    icon: Server,
+    skills: [
+      { name: 'FastAPI', status: 'Used in projects', note: 'High-performance Python REST APIs & Pydantic validation' },
+      { name: 'Flask', status: 'Used in projects', note: 'Lightweight web framework & role-based routing' },
+      { name: 'REST APIs', status: 'Used in projects', note: 'Client-server contracts, JSON endpoints & CRUD workflows' },
+    ],
+  },
+  {
+    id: 'databases',
+    title: 'Databases',
+    icon: Database,
+    skills: [
+      { name: 'PostgreSQL', status: 'Used in projects', note: 'Relational data modeling, queries & schema design' },
+      { name: 'MySQL', status: 'Used in projects', note: 'Database management system coursework & SQL queries' },
+      { name: 'Supabase', status: 'Used in projects', note: 'Backend-as-a-service, PostgreSQL & real-time tables' },
+    ],
+  },
+  {
+    id: 'ai-ml-data',
+    title: 'AI/ML and Data',
+    icon: Cpu,
+    skills: [
+      { name: 'Scikit-learn', status: 'Used in projects', note: 'Classification, regression & model evaluation pipelines' },
+      { name: 'Streamlit', status: 'Used in projects', note: 'Interactive dashboards & network diagnostic interfaces' },
+      { name: 'Data Structures & Algorithms', status: 'Practising', note: 'Daily practice on LeetCode & Striver A2Z sheet' },
+      { name: 'Machine Learning', status: 'Currently learning', note: 'Supervised learning principles & predictive modeling' },
+    ],
+  },
+  {
+    id: 'tools-cloud',
+    title: 'Tools and Cloud',
+    icon: Terminal,
+    skills: [
+      { name: 'Git & GitHub', status: 'Used in projects', note: 'Version control, branch management & collaboration' },
+      { name: 'Cisco Packet Tracer', status: 'Used in projects', note: 'Network topology simulation & packet inspection' },
+      { name: 'VS Code', status: 'Used in projects', note: 'Primary development environment & debugging tools' },
+      { name: 'Docker', status: 'Currently learning', note: 'Containerization basics & local environment setup' },
+    ],
+  },
+]
 
-// Honest status styling badge helper
+// Status pill component distinguishing real usage from learning
 function StatusBadge({ status }) {
   switch (status) {
     case 'Practising':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span>Practising</span>
         </span>
       )
     case 'Used in projects':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-accent/15 text-accent border border-accent/30">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-accent/15 text-accent border border-accent/25 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-accent" />
           <span>Used in projects</span>
         </span>
       )
     case 'Currently learning':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/25">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-          <span>Currently learning</span>
+          <span>Learning</span>
         </span>
       )
     case 'Familiar with':
     default:
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-blue-500/10 text-blue-300 border border-blue-500/25">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-          <span>Familiar with</span>
+          <span>Familiar</span>
         </span>
       )
   }
 }
 
 /**
- * Interactive Developer Terminal ("CURRENT FOCUS")
- * Types out realistic focus lines once on enter view, with static fallback.
- */
-function FocusTerminal({ reducedMotion }) {
-  const terminalRef = useRef(null)
-  const isInView = useInView(terminalRef, { once: true, margin: '-50px' })
-
-  const focusData = skillsBento?.currentFocus || {}
-  const title = focusData.title || 'CURRENT FOCUS'
-  const command = focusData.command || 'sakshi --focus'
-  const focusFields = Array.isArray(focusData.fields) && focusData.fields.length > 0
-    ? focusData.fields
-    : [
-        { key: 'current_focus', value: 'C++ and DSA' },
-        { key: 'practice', value: 'Striver A2Z' },
-        { key: 'building', value: 'Full-stack and applied AI projects' },
-        { key: 'goal', value: 'Software engineering internships in 2027' },
-      ]
-
-  const [visibleCount, setVisibleCount] = useState(reducedMotion ? focusFields.length : 0)
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setVisibleCount(focusFields.length)
-      return
-    }
-
-    if (!isInView) return
-
-    const interval = setInterval(() => {
-      setVisibleCount((prev) => {
-        if (prev < focusFields.length) {
-          return prev + 1
-        }
-        clearInterval(interval)
-        return prev
-      })
-    }, 280)
-
-    return () => clearInterval(interval)
-  }, [isInView, reducedMotion, focusFields.length])
-
-  const isTypingDone = visibleCount >= focusFields.length
-
-  return (
-    <div
-      ref={terminalRef}
-      className="rounded-2xl border border-border/80 bg-background-surface/90 shadow-card p-5 overflow-hidden transition-all duration-300 hover:border-accent/40"
-    >
-      {/* Terminal Title Bar */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-border/60">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-          </div>
-          <span className="font-mono text-xs text-foreground-muted ml-2 flex items-center gap-1.5">
-            <Terminal className="w-3.5 h-3.5 text-accent" />
-            <span>{title}</span>
-          </span>
-        </div>
-
-        <span className="font-mono text-[10px] text-accent/80 px-2 py-0.5 rounded bg-accent/10 border border-accent/20">
-          zsh
-        </span>
-      </div>
-
-      {/* Terminal Body */}
-      <div className="font-mono text-xs space-y-2 select-text">
-        <div className="text-foreground-muted flex items-center gap-1.5">
-          <span className="text-accent">$</span>
-          <span className="text-foreground">{command}</span>
-        </div>
-
-        <div className="space-y-1.5 pt-1">
-          {focusFields.slice(0, visibleCount).map((field, idx) => {
-            if (!field) return null
-            const fieldKey = field.key || `field-${idx}`
-            const fieldValue = field.value || ''
-
-            return (
-              <motion.div
-                key={fieldKey}
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3"
-              >
-                <span className="text-foreground-muted text-[11px] min-w-[110px]">
-                  {fieldKey}:
-                </span>
-                <span className="text-foreground font-medium text-xs">
-                  {fieldValue}
-                </span>
-              </motion.div>
-            )
-          })}
-
-          {!isTypingDone && (
-            <span className="inline-block w-2 h-3.5 bg-accent animate-pulse align-middle ml-1" />
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/**
- * Interactive Tech Constellation Matrix
- * Visualizes interconnected tools (e.g. React ↔ JavaScript, FastAPI ↔ Python)
- */
-function TechConstellation({ constellation, reducedMotion }) {
-  const [activeLink, setActiveLink] = useState(null)
-
-  return (
-    <div className="rounded-2xl border border-border/80 bg-background-surface/80 p-5 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Network className="w-4 h-4 text-accent" />
-          <h4 className="font-mono text-xs font-semibold uppercase tracking-wider text-foreground">
-            Interconnected Stack
-          </h4>
-        </div>
-        <span className="font-mono text-[10px] text-foreground-muted">
-          Click or hover links
-        </span>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        {constellation.map((link) => {
-          const isActive = activeLink === link.id
-
-          return (
-            <motion.div
-              key={link.id}
-              onClick={() => setActiveLink(isActive ? null : link.id)}
-              onMouseEnter={() => setActiveLink(link.id)}
-              onMouseLeave={() => setActiveLink(null)}
-              whileHover={reducedMotion ? {} : { y: -2 }}
-              className={cn(
-                'cursor-pointer rounded-xl border p-3 transition-all duration-200 select-none',
-                isActive
-                  ? 'bg-accent/10 border-accent/60 shadow-glow'
-                  : 'bg-background hover:bg-background-elevated border-border/70 text-foreground-muted'
-              )}
-            >
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className={cn('font-semibold', isActive ? 'text-accent' : 'text-foreground')}>
-                  {link.source}
-                </span>
-                <span className="text-accent/60 px-1">&harr;</span>
-                <span className={cn('font-semibold', isActive ? 'text-accent' : 'text-foreground')}>
-                  {link.target}
-                </span>
-              </div>
-              <p className="mt-1 text-[11px] text-foreground-muted truncate">
-                {link.description}
-              </p>
-            </motion.div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-/**
- * Upgraded Interactive Developer Skills Dashboard (`id="skills"`)
+ * Minimal, Elegant & Recruiter-Friendly Technologies and Skills Section (`id="skills"`)
+ * Displays technical stack clearly across 6 distinct categories without visual clutter.
  */
 export function Skills() {
   const reducedMotion = useReducedMotion()
   const fadeUpVariant = createFadeUp(reducedMotion)
-  const [selectedIdx, setSelectedIdx] = useState(0)
-
-  const { categories, constellation } = skillsBento
-  const activeCategory = categories[selectedIdx] || categories[0]
-  const ActiveCategoryIcon = iconMap[activeCategory.iconName] || Code2
 
   return (
     <Section
       id="skills"
-      label="03 // SKILLS"
-      title="Tools I use. Skills I'm growing."
-      description="A hands-on journey through software development and applied AI."
+      label="03 // TECHNOLOGIES & SKILLS"
+      title="Technical Stack"
+      description="Core programming languages, frameworks, and developer tools I work with daily and use to build practical software."
       className="relative overflow-hidden"
     >
-      {/* Subtle Low-Contrast Grid Background */}
+      {/* Background Low-Contrast Grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,#1f1f2312_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2312_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-70"
       />
 
       {/* ============================================================== */}
-      {/* 1. SIX INTERACTIVE CATEGORY CARDS                              */}
+      {/* SIX-CARD CLEAN BENTO GRID (3 COLS DESKTOP, 2 TABLET, 1 MOBILE) */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-        {categories.map((cat, idx) => {
-          const isSelected = selectedIdx === idx
-          const Icon = iconMap[cat.iconName] || Code2
-          const skillCount = cat.skills.length
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {skillCategories.map((category, idx) => {
+          const Icon = category.icon
 
           return (
-            <motion.button
-              key={cat.id}
-              type="button"
-              onClick={() => setSelectedIdx(idx)}
+            <motion.div
+              key={category.id}
+              variants={fadeUpVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportConfig}
+              transition={{
+                duration: reducedMotion ? 0.01 : 0.3,
+                delay: reducedMotion ? 0 : idx * 0.06,
+              }}
               whileHover={reducedMotion ? {} : { y: -3 }}
-              transition={{ duration: 0.2 }}
-              className={cn(
-                'group relative rounded-xl border p-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-                isSelected
-                  ? 'bg-background-surface border-accent/60 shadow-card'
-                  : 'bg-background-surface/60 hover:bg-background-surface border-border/80 hover:border-accent/40'
-              )}
+              className="rounded-2xl border border-border/80 bg-background-surface/80 hover:bg-background-surface backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-card hover:border-accent/40 group"
             >
-              {/* Highlight Glow for active card */}
-              {isSelected && (
-                <motion.div
-                  layoutId="active-skill-category-indicator"
-                  className="absolute inset-0 rounded-xl bg-accent/5 border border-accent/40 -z-10 shadow-glow"
-                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                />
-              )}
+              <div>
+                {/* Category Header: Icon + Title + Count */}
+                <div className="flex items-center justify-between pb-3.5 border-b border-border/60 mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/25 flex items-center justify-center text-accent group-hover:scale-105 group-hover:bg-accent/20 transition-all">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className="font-heading font-semibold text-sm sm:text-base text-foreground group-hover:text-accent transition-colors">
+                      {category.title}
+                    </h3>
+                  </div>
 
-              <div className="flex items-center justify-between mb-3">
-                <div
-                  className={cn(
-                    'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
-                    isSelected
-                      ? 'bg-accent/20 text-accent border border-accent/30'
-                      : 'bg-background text-foreground-muted group-hover:text-accent border border-border'
-                  )}
-                >
-                  <Icon className="w-4 h-4" />
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-background border border-border text-foreground-muted">
+                    {category.skills.length} skills
+                  </span>
                 </div>
 
-                <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-background border border-border text-foreground-muted">
-                  {skillCount} skills
-                </span>
+                {/* Compact Technology Rows */}
+                <div className="space-y-2.5">
+                  {category.skills.map((skill) => (
+                    <div
+                      key={skill.name}
+                      className="p-2.5 rounded-xl bg-background/60 hover:bg-background border border-border/60 hover:border-accent/30 transition-colors flex flex-col justify-between gap-1"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-heading font-medium text-xs text-foreground">
+                          {skill.name}
+                        </span>
+                        <StatusBadge status={skill.status} />
+                      </div>
+                      <p className="text-[11px] text-foreground-muted leading-relaxed truncate">
+                        {skill.note}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <h3
-                className={cn(
-                  'font-heading font-semibold text-sm transition-colors',
-                  isSelected ? 'text-foreground' : 'text-foreground-muted group-hover:text-foreground'
-                )}
-              >
-                {cat.title}
-              </h3>
-
-              <p className="text-[11px] text-foreground-muted line-clamp-2 mt-1 leading-relaxed">
-                {cat.description}
-              </p>
-            </motion.button>
+            </motion.div>
           )
         })}
       </div>
 
       {/* ============================================================== */}
-      {/* 2. DETAIL PANEL & DEVELOPER TERMINAL / CONSTELLATION           */}
+      {/* MINIMAL FOCUS BANNER                                            */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Active Category Skill Details */}
-        <div className="lg:col-span-7">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: reducedMotion ? 0.01 : 0.25, ease: 'easeOut' }}
-              className="rounded-2xl border border-border/80 bg-background-surface/90 backdrop-blur-md p-6 sm:p-7 shadow-card space-y-6"
-            >
-              {/* Detail Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border/60 gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center text-accent shrink-0">
-                    <ActiveCategoryIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-bold text-lg text-foreground">
-                      {activeCategory.title}
-                    </h4>
-                    <p className="text-xs text-foreground-muted">
-                      {activeCategory.description}
-                    </p>
-                  </div>
-                </div>
-
-                <span className="font-mono text-xs text-accent self-start sm:self-center font-semibold">
-                  {activeCategory.skills.length} verified technologies
-                </span>
-              </div>
-
-              {/* Staggered Skill Items */}
-              <div className="space-y-2.5">
-                {activeCategory.skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: reducedMotion ? 0.01 : 0.2,
-                      delay: reducedMotion ? 0 : index * 0.04,
-                    }}
-                    whileHover={reducedMotion ? {} : { x: 3 }}
-                    className="p-3.5 rounded-xl bg-background border border-border/70 hover:border-accent/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs group"
-                  >
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className="font-heading font-semibold text-sm text-foreground group-hover:text-accent transition-colors">
-                          {skill.name}
-                        </span>
-                      </div>
-                      <p className="text-xs text-foreground-muted leading-relaxed">
-                        {skill.note}
-                      </p>
-                    </div>
-
-                    <div className="shrink-0">
-                      <StatusBadge status={skill.status} />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+      <motion.div
+        variants={fadeUpVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportConfig}
+        className="mt-8 p-4 rounded-xl border border-accent/20 bg-accent/5 backdrop-blur-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"
+      >
+        <div className="flex items-center gap-2.5">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+          <span className="font-mono text-xs text-foreground">
+            <strong>Current Focus:</strong> C++ Algorithmic Problem Solving (Striver A2Z DSA) &bull; Full-Stack Systems &bull; Applied AI
+          </span>
         </div>
 
-        {/* Right: Current Focus Terminal & Tech Constellations */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* Current Focus Terminal */}
-          <FocusTerminal reducedMotion={reducedMotion} />
-
-          {/* Interactive Constellation Matrix */}
-          <TechConstellation constellation={constellation} reducedMotion={reducedMotion} />
-        </div>
-      </div>
+        <span className="font-mono text-[11px] text-accent font-medium shrink-0">
+          Open to 2027 Internships
+        </span>
+      </motion.div>
     </Section>
   )
 }

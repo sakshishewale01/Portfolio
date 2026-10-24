@@ -38,9 +38,9 @@ export function Experience() {
   return (
     <Section
       id="experience"
-      label="06 // JOURNEY & ACTIVITY"
-      title="Engineering Journey & Active Practice"
-      description="Academic studies at MIT Academy of Engineering, industry internship, and active algorithmic problem-solving."
+      label="05 // EXPERIENCE & JOURNEY"
+      title="Education, Hackathons & Experience"
+      description="Academic studies at MIT Academy of Engineering, hackathon problem-solving, and hands-on software development."
     >
       {/* ================= VERTICAL TIMELINE ================= */}
       <div ref={timelineRef} className="relative mb-16 pt-4 pb-8">
