@@ -9,7 +9,7 @@ export const profile = {
 
   role: "Software Developer",
   title: "Third-Year B.Tech Computer Science Student",
-  availability: "Open to Software Engineering Internships • 2027",
+  availability: "Open to Software Engineering Internships ",
 
   photo: {
     src: "/images/sakshi.jpg",
