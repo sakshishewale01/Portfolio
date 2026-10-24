@@ -17,8 +17,8 @@ export const experience = [
     ],
     skills: ["Python", "Streamlit", "AI/ML", "Cisco Packet Tracer", "Git/GitHub"],
     links: [
-      { label: "Live Demo", url: "TODO" },
-      { label: "GitHub Repository", url: "https://github.com/sakshishewale01" },
+      { label: "Live Demo", url: "https://nextsageaigit-cyqypcvuoisfvv8yfxbzvj.streamlit.app/" },
+      { label: "GitHub Profile", url: "https://github.com/sakshishewale01" },
     ],
     icon: "Briefcase",
   },

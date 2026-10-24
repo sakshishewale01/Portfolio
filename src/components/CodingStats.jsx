@@ -188,8 +188,8 @@ export function CodingStats() {
               <span>Live API Synced</span>
             </span>
           ) : (
-            <Badge variant="outline" size="sm" className="text-amber-400 border-amber-500/30">
-              <WifiOff className="w-3 h-3 mr-1" /> Offline Cached
+            <Badge variant="outline" size="sm" className="text-accent border-accent/30 font-mono text-xs">
+              <CheckCircle2 className="w-3 h-3 mr-1 text-accent" /> Verified Profile Data
             </Badge>
           )}
         </div>

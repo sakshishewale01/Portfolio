@@ -10,6 +10,7 @@ import {
   Server,
   Cpu,
   Terminal,
+  Database,
   Sparkles,
   Layers,
   ArrowRight,
@@ -23,7 +24,9 @@ const iconMap = {
   Code2: Code2,
   Layout: Layout,
   Server: Server,
+  Database: Database,
   Cpu: Cpu,
+  Terminal: Terminal,
 }
 
 // Honest status styling badge helper
@@ -256,9 +259,9 @@ export function Skills() {
       />
 
       {/* ============================================================== */}
-      {/* 1. FOUR INTERACTIVE CATEGORY CARDS                             */}
+      {/* 1. SIX INTERACTIVE CATEGORY CARDS                              */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
         {categories.map((cat, idx) => {
           const isSelected = selectedIdx === idx
           const Icon = iconMap[cat.iconName] || Code2
