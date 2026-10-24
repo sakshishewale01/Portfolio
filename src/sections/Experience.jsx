@@ -38,7 +38,7 @@ export function Experience() {
   return (
     <Section
       id="experience"
-      label="05 // Experience"
+      label="05 // EXPERIENCE & JOURNEY"
       title="Education, Hackathons & Experience"
       description="Academic studies at MIT Academy of Engineering, hackathon problem-solving, and hands-on software development."
     >

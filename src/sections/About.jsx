@@ -2,54 +2,58 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { profile } from '../data/profile'
 import { Section } from '../components/ui/Section'
-import { Photo } from '../components/ui/Photo'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { createFadeUp, viewportConfig } from '../lib/motion'
 import {
-  MapPin,
-  ArrowUpRight,
-  Sparkles,
+  GraduationCap,
   Layers,
   Code2,
+  Sparkles,
+  ArrowUpRight,
+  MapPin,
+  Calendar,
+  CheckCircle2,
   Terminal,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
+const iconMap = {
+  GraduationCap: GraduationCap,
+  Layers: Layers,
+  Code2: Code2,
+  Sparkles: Sparkles,
+}
+
 /**
- * Premium, Cinematic & Recruiter-Friendly About Section (`id="about"`)
- * Features:
- * - Editorial typography with optimal 540-580px readable text width
- * - Refined portrait card with subtle violet border, restrained glow, and clear metadata
- * - Three compact skill focus tags with micro-accents
- * - Integrated "WHAT I'M BUILDING" project strip featuring genuine projects (FlowGrid & TeamFlow)
- * - Restrained, GPU-accelerated motion with full prefers-reduced-motion support
+ * Editorial About Section (`id="about"`)
+ * Presents Sakshi's genuine engineering student narrative and core focus blocks.
  */
 export function About() {
   const reducedMotion = useReducedMotion()
   const fadeUpVariant = createFadeUp(reducedMotion)
 
-  const { paragraphs } = profile.about
+  const { paragraphs, focusAreas } = profile.about
 
-  // 3 compact skill tags
   const skillTags = [
-    'Full-Stack Development',
-    'Data Structures & Algorithms',
+    'Full-Stack Systems',
+    'C++ & Data Structures',
     'Applied Machine Learning',
+    'Relational Databases',
+    'REST APIs',
   ]
 
-  // Genuine highlighted projects for the compact strip
   const featuredBuilds = [
     {
       title: 'FlowGrid',
-      description: 'Smart logistics and transportation management with shipment-delay prediction.',
+      tagline: 'Logistics platform with ML delay prediction',
+      tech: 'FastAPI • PostgreSQL • React • Scikit-learn',
       githubUrl: 'https://github.com/sakshishewale01',
-      category: 'Full-Stack + ML',
     },
     {
       title: 'TeamFlow',
-      description: 'Role-based team and task management application with real-time updates.',
+      tagline: 'Real-time collaborative task workspace',
+      tech: 'React • Supabase • Tailwind CSS',
       githubUrl: 'https://github.com/sakshishewale01/TeamFlow',
-      category: 'Full-Stack',
     },
   ]
 
@@ -58,7 +62,7 @@ export function About() {
       id="about"
       label="02 // ABOUT ME"
       title="Learning by building. Growing through code."
-      description="My journey in computer science, the projects I build, and the problems I am learning to solve."
+      description="Computer Science student passionate about full-stack systems, algorithmic problem-solving, and building dependable software."
       className="relative overflow-hidden"
     >
       {/* Subtle Low-Contrast Background Grid */}
@@ -67,19 +71,17 @@ export function About() {
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,#1f1f2312_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2312_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-70"
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-        {/* ============================================================== */}
-        {/* LEFT COLUMN: EDITORIAL BIO, SKILL TAGS & PROJECT STRIP         */}
-        {/* ============================================================== */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* ================= LEFT COLUMN: STORY & FOCUS STRIP ================= */}
         <motion.div
           variants={fadeUpVariant}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
-          className="lg:col-span-7 flex flex-col justify-start space-y-8"
+          className="lg:col-span-7 flex flex-col justify-start space-y-6"
         >
-          {/* Main Story Paragraphs (~540-580px readable desktop width) */}
-          <div className="max-w-[580px] space-y-4 text-sm sm:text-base leading-relaxed text-foreground-muted">
+          {/* Main Editorial Paragraphs */}
+          <div className="space-y-4 text-sm sm:text-base leading-relaxed text-foreground-muted max-w-xl">
             {paragraphs.map((p, idx) => (
               <p
                 key={idx}
@@ -94,7 +96,7 @@ export function About() {
             ))}
           </div>
 
-          {/* Three Compact Skill Tags */}
+          {/* Skill Focus Pills */}
           <div className="space-y-2 pt-1">
             <span className="block font-mono text-[11px] uppercase tracking-wider text-foreground-muted">
               Core Technical Focus
@@ -103,7 +105,7 @@ export function About() {
               {skillTags.map((tag) => (
                 <div
                   key={tag}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/25 bg-accent/5 text-foreground text-xs font-mono transition-colors hover:border-accent/45 hover:bg-accent/10 select-none"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent/25 bg-accent/5 text-foreground text-xs font-mono transition-colors hover:border-accent/45 hover:bg-accent/10 select-none"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>{tag}</span>
@@ -112,12 +114,12 @@ export function About() {
             </div>
           </div>
 
-          {/* WHAT I'M BUILDING - Compact Integrated Project Strip */}
-          <div className="pt-4 border-t border-border/60 max-w-[580px] space-y-3.5">
+          {/* What I'm Building Spotlight Strip */}
+          <div className="pt-4 border-t border-border/60 max-w-xl space-y-3.5">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs font-semibold uppercase tracking-wider text-accent flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>WHAT I'M BUILDING</span>
+                <span>WHAT I'M CURRENTLY BUILDING</span>
               </span>
               <span className="text-[11px] font-mono text-foreground-muted">
                 Active Projects
@@ -141,13 +143,12 @@ export function About() {
                       <ArrowUpRight className="w-3.5 h-3.5 text-foreground-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </div>
                     <p className="text-xs text-foreground-muted leading-relaxed line-clamp-2">
-                      {item.description}
+                      {item.tagline}
                     </p>
                   </div>
 
-                  <span className="font-mono text-[11px] text-accent/80 group-hover:underline flex items-center gap-1">
-                    <span>View on GitHub</span>
-                    <span>&rarr;</span>
+                  <span className="font-mono text-[10px] text-accent/80 group-hover:underline flex items-center gap-1">
+                    <span>{item.tech}</span>
                   </span>
                 </a>
               ))}
@@ -155,73 +156,53 @@ export function About() {
           </div>
         </motion.div>
 
-        {/* ============================================================== */}
-        {/* RIGHT COLUMN: REFINED CINEMATIC PORTRAIT CARD                  */}
-        {/* ============================================================== */}
+        {/* ================= RIGHT COLUMN: 4 COMPACT INFORMATION BLOCKS ================= */}
         <motion.div
           variants={fadeUpVariant}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
-          className="lg:col-span-5 w-full flex justify-center lg:justify-end"
+          className="lg:col-span-5 grid grid-cols-1 gap-3.5"
         >
-          <div className="relative w-full max-w-[340px] sm:max-w-[360px] lg:max-w-[380px]">
-            {/* Subtle Ambient Violet Glow Behind Photo */}
-            <div
-              aria-hidden="true"
-              className="absolute -inset-3 rounded-3xl bg-accent/15 blur-2xl pointer-events-none opacity-60 transition-opacity duration-500 group-hover:opacity-100"
-            />
+          {focusAreas.map((block, idx) => {
+            const Icon = iconMap[block.icon] || Code2
 
-            {/* Refined Portrait Container */}
-            <div className="relative rounded-2xl overflow-hidden border border-accent/30 hover:border-accent/60 bg-background-surface/90 shadow-card transition-all duration-300 group hover:shadow-glow">
-              {/* Photo Frame Container */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden bg-background-elevated">
-                <Photo
-                  src={profile.photo.src}
-                  alt={profile.photo.alt || "Portrait of Sakshi Shewale"}
-                  width={profile.photo.width || 600}
-                  height={profile.photo.height || 750}
-                  fallbackInitials={profile.monogram || "SS"}
-                  className="w-full h-full"
-                  imageClassName="transition-transform duration-700 ease-out group-hover:scale-102"
-                />
+            return (
+              <motion.div
+                key={block.title}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewportConfig}
+                transition={{
+                  duration: reducedMotion ? 0.01 : 0.4,
+                  delay: reducedMotion ? 0 : idx * 0.08,
+                }}
+                className="p-4 rounded-xl border border-border/80 bg-background-surface/80 hover:bg-background-surface hover:border-accent/40 transition-all duration-300 shadow-card group"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent shrink-0 group-hover:scale-105 transition-transform">
+                    <Icon className="w-4 h-4" />
+                  </div>
 
-                {/* Availability Badge Overlay (Top-Left) */}
-                <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/85 backdrop-blur-md border border-white/10 text-emerald-400 font-mono text-[11px] shadow-subtle">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                    </span>
-                    <span className="font-medium text-emerald-300">Open to opportunities</span>
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
+                        {block.title}
+                      </span>
+                    </div>
+
+                    <h4 className="font-heading font-semibold text-sm text-foreground group-hover:text-accent transition-colors truncate">
+                      {block.subtitle}
+                    </h4>
+
+                    <p className="text-xs text-foreground-muted leading-relaxed">
+                      {block.detail}
+                    </p>
                   </div>
                 </div>
-
-                {/* Subtle Gradient Vignette at Bottom to Protect Overlaid Text */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background-surface via-background-surface/80 to-transparent pointer-events-none z-10"
-                />
-
-                {/* Portrait Overlay Footer Info */}
-                <div className="absolute inset-x-0 bottom-0 p-4 z-20 flex flex-col justify-end">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="font-heading font-bold text-base sm:text-lg text-foreground tracking-tight">
-                      {profile.fullName || "Sakshi Shewale"}
-                    </h3>
-                    <span className="font-mono text-xs text-accent font-semibold shrink-0">
-                      B.Tech CSE &bull; MITAOE
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-xs font-mono text-foreground-muted mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-accent shrink-0" />
-                    <span>{profile.location || "Pune, India"}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </div>
     </Section>

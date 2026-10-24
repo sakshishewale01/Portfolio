@@ -58,15 +58,17 @@ export function Footer() {
           >
             <Code2 className="w-4 h-4" />
           </a>
-          <a
-            href={profile.socials.codechef}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2.5 text-foreground-muted hover:text-foreground hover:bg-background-elevated rounded-lg transition-colors border border-transparent hover:border-border"
-            aria-label="CodeChef Profile"
-          >
-            <Terminal className="w-4 h-4" />
-          </a>
+          {profile.socials.codechef && (
+            <a
+              href={profile.socials.codechef}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 text-foreground-muted hover:text-foreground hover:bg-background-elevated rounded-lg transition-colors border border-transparent hover:border-border"
+              aria-label="CodeChef Profile"
+            >
+              <Terminal className="w-4 h-4" />
+            </a>
+          )}
         </div>
 
         {/* Built With, Resume & Back to Top */}

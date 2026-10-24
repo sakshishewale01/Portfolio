@@ -1,6 +1,7 @@
 
 /**
  * Profile & Personal Information for Sakshi Shewale
+ * Authentic, honest, and tailored for early-career software engineering opportunities.
  */
 export const profile = {
   name: "Sakshi",
@@ -9,7 +10,7 @@ export const profile = {
 
   role: "Software Developer",
   title: "Third-Year B.Tech Computer Science Student",
-  availability: "Open to Software Engineering Internships • 2027",
+  availability: "Open to Software Engineering Internships",
 
   photo: {
     src: "/images/sakshi.jpg",
@@ -18,28 +19,30 @@ export const profile = {
     height: 750,
   },
 
+  positioningStatement: "Computer Science Student Building Thoughtful Software.",
+
   rotatingRoles: [
-    "Software Developer",
     "Full-Stack Developer",
-    "Applied AI/ML Enthusiast",
-    "Problem Solver",
+    "C++ Problem Solver",
+    "Backend & Systems Enthusiast",
+    "Applied AI/ML Explorer",
   ],
 
   tagline:
-    "Building practical software, exploring applied AI, and turning ideas into working products.",
+    "Third-year CSE student at MIT Academy of Engineering, Pune. Building full-stack web applications, practicing C++ algorithmic problem-solving, and turning ideas into reliable software.",
 
   location: "Pune, India",
   email: "sakshishewale05@gmail.com",
   resumeUrl: "/Sakshi_Shewale_Resume.pdf",
 
   bio:
-    "I am a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, passionate about software development, problem-solving, and applied artificial intelligence. I enjoy building full-stack applications, experimenting with machine learning, and learning how to design reliable, maintainable software. I am currently strengthening my data structures and algorithms skills while developing projects that solve practical problems.",
+    "I am a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, Pune. I enjoy turning complex problems into working, clean software. Through hands-on projects like FlowGrid, TeamFlow, and Conference Review Management System, I explore full-stack development, backend APIs, and applied machine learning. Currently strengthening my Data Structures and Algorithms in C++ while preparing for software engineering internships.",
 
   about: {
     paragraphs: [
-      "I’m Sakshi Shewale, a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, Pune.",
-      "I enjoy turning ideas into working software. Through hands-on projects, I’m exploring full-stack development, backend systems, databases, and applied machine learning while strengthening my computer science fundamentals.",
-      "Currently, I’m practising DSA in C++, improving my software development skills, and preparing for software engineering internships. I value consistent learning, clean implementation, and understanding how the code I write actually works.",
+      "I'm Sakshi Shewale, a third-year B.Tech Computer Science and Engineering student at MIT Academy of Engineering, Pune.",
+      "I believe the best way to understand computer science is by building real things. Through hands-on projects, I design web applications with structured backend workflows, role-based access, and clean database schemas—such as FlowGrid (logistics management with ML delay prediction) and TeamFlow (real-time collaborative task workspace).",
+      "Right now, I am actively sharpening my algorithmic problem-solving skills in C++ using LeetCode. I care deeply about writing readable code, understanding how systems work under the hood, and collaborating effectively in team environments.",
     ],
 
     education: {
@@ -48,17 +51,37 @@ export const profile = {
       period: "2024 — 2028",
       location: "Pune, India",
       coursework:
-        "Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, Computer Networks, and Machine Learning",
+        "Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, Computer Networks, Operating Systems, and Machine Learning",
     },
 
-    highlights: [
+    focusAreas: [
       {
-        title: "Full-Stack Project Development",
-        subtitle: "TeamFlow & ConferenceFlow",
-        description:
-          "Building web applications involving authentication, role-based access, database integration, and structured workflows.",
-        metric: "Hands-on Projects",
+        title: "Education",
+        subtitle: "MIT Academy of Engineering, Pune",
+        detail: "B.Tech in Computer Science & Engineering (2024 — 2028). Core coursework in DSA, DBMS, OOP, and Networks.",
+        icon: "GraduationCap",
       },
+      {
+        title: "Areas of Interest",
+        subtitle: "Full-Stack & Backend Systems",
+        detail: "REST APIs, relational databases, distributed state management, and applied machine learning integration.",
+        icon: "Layers",
+      },
+      {
+        title: "Current Focus",
+        subtitle: "C++ & Data Structures",
+        detail: "Daily problem-solving on Striver A2Z DSA sheet and LeetCode, mastering graph algorithms, trees, and dynamic programming.",
+        icon: "Code2",
+      },
+      {
+        title: "What I Enjoy Building",
+        subtitle: "Practical, Workflow-Driven Apps",
+        detail: "Tools that remove operational friction—logistics tracking with predictive delay estimates, collaborative team boards, and review platforms.",
+        icon: "Sparkles",
+      },
+    ],
+
+    highlights: [
       {
         title: "FlowGrid",
         subtitle: "Smart Logistics & Transportation",
@@ -67,21 +90,77 @@ export const profile = {
         metric: "Full-Stack + ML",
       },
       {
-        title: "Hackathons & Innovation",
-        subtitle: "Team-Based Problem Solving",
+        title: "TeamFlow",
+        subtitle: "Real-Time Team Workspace",
         description:
-          "Participated in innovation and hackathon projects, including the Smart India Hackathon 2025 and Trust AI Ideathon 2026.",
-        metric: "Hackathon Experience",
+          "Collaborative project and task management web application built using React, Vite, Tailwind CSS, and Supabase.",
+        metric: "Realtime Web",
+      },
+      {
+        title: "Conference Review System",
+        subtitle: "Peer Review Workflow Platform",
+        description:
+          "Academic paper submission and review lifecycle platform built with Flask, MySQL, and role-based permissions.",
+        metric: "Backend System",
       },
       {
         title: "DSA & Problem Solving",
-        subtitle: "C++ • Striver A2Z • LeetCode",
+        subtitle: "C++  • LeetCode",
         description:
-          "Practising data structures and algorithms, learning common problem-solving patterns, and preparing for technical interviews.",
-        metric: "Ongoing Practice",
+          "Active daily problem solving in C++, covering foundational to advanced algorithmic patterns.",
+        metric: "50+ Solved",
       },
     ],
   },
+
+  achievements: [
+    {
+      id: "trust-ai-ideathon-2026",
+      title: "Trust AI Ideathon 2026",
+      award: "Top 20 Finalist",
+      year: "2026",
+      organization: "National Level AI Ideathon",
+      description:
+        "Selected in the Top 20 nationally and secured 2nd Runner Up for conceptualizing and designing a responsible, ethical AI validation framework with structured governance checks.",
+      tags: ["Responsible AI", "System Design", "Ethical AI", "Innovation"],
+      verified: true,
+    },
+    {
+      id: "datathon-2026",
+      title: "Datathon 2026",
+      award: "MITAOE Datathon Finalist",
+      year: "2026",
+      organization: "Competitive Data & ML Challenge",
+      description:
+        "Qualified as a finalist, competing against engineering teams on real-world data preprocessing, feature engineering, and predictive modeling tasks.",
+      tags: ["Data Science", "Machine Learning", "Scikit-learn", "Python"],
+      verified: true,
+      badge: "Finalist",
+    },
+    {
+      id: "cisco-virtual-internship",
+      title: "Cisco AI/ML Virtual Internship",
+      award: "Completed & Verified",
+      year: "2026",
+      organization: "Cisco Networking Academy",
+      description:
+        "Completed rigorous virtual internship applying AI/ML concepts and Packet Tracer network topology diagnostics, building NetSage AI for automated diagnostic rule checks.",
+      tags: ["Cisco", "Networking", "AI/ML", "Streamlit"],
+      verified: true,
+      badge: "Internship",
+    },
+    {
+      id: "smart-india-hackathon-2026",
+      title: "Smart India Hackathon 2026",
+      award: "Internal Finalist",
+      year: "2026",
+      organization: "Ministry of Education & AICTE",
+      description:
+        "Selected as a  finalist for solving practical problem statements with a rapid, full-stack prototype.",
+      tags: ["Full-Stack", "Rapid Prototyping", "Innovation", "System Design"],
+      verified: true,
+    },
+  ],
 
   codingProfiles: {
     github: {
@@ -110,49 +189,49 @@ export const profile = {
   },
 
   projectStats: {
-    featured: 5,
+    featured: 6,
     total: 11,
   },
   repoCount: 34,
 
   stats: [
     {
-      label: "Projects",
+      label: "Real-World Projects",
       numericValue: 5,
       suffix: "+",
-      description: "Full-stack and applied AI projects",
+      description: "Full-stack systems and applied ML solutions",
     },
     {
-      label: "Hackathons & Ideathons",
+      label: "Hackathons & Awards",
       numericValue: 3,
       suffix: "+",
-      description: "Collaborative problem-solving experience",
+      description: "finalist & runner up honors",
     },
     {
-      label: "Learning & Building",
-      numericValue: 100,
-      suffix: "%",
-      description: "Focused on continuous improvement",
+      label: "DSA Solved (C++)",
+      numericValue: 51,
+      suffix: "+",
+      description: "LeetCode problems",
     },
   ],
 
   techMarquee: [
     "C++",
-    "Java",
     "Python",
+    "Java",
     "JavaScript",
     "React",
-    "HTML",
-    "CSS",
-    "Tailwind CSS",
     "FastAPI",
     "PostgreSQL",
     "MySQL",
-    "Streamlit",
+    "Tailwind CSS",
+    "Supabase",
+    "Flask",
+    "Scikit-learn",
     "Git",
     "GitHub",
-    "Scikit-learn",
-    "Machine Learning",
+    "Docker",
+    "Streamlit",
   ],
 };
 
@@ -164,7 +243,7 @@ export const navLinks = [
   { id: "about", label: "About", href: "/#about" },
   { id: "skills", label: "Skills", href: "/#skills" },
   { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "experience", label: "Experience", href: "/#experience" },
+  { id: "experience", label: "Journey", href: "/#experience" },
   { id: "contact", label: "Contact", href: "/#contact" },
 ];
 
